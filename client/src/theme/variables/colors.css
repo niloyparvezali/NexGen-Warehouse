@@ -1,0 +1,68 @@
+:root {
+  /* NexGen Dark ERP/POS Design System */
+  --primary: #2563EB;
+  --primary-hover: #1D4ED8;
+  --primary-active: #1D4ED8;
+  --primary-soft: rgba(37, 99, 235, 0.16);
+  --primary-lighter: #3B82F6;
+  --color-on-primary: #FFFFFF;
+
+  --success: #22C55E;
+  --success-dark: #22C55E;
+  --success-text: #22C55E;
+  --success-soft: rgba(34, 197, 94, 0.16);
+
+  --warning: #F59E0B;
+  --warning-dark: #F59E0B;
+  --warning-text: #F59E0B;
+  --warning-soft: rgba(245, 158, 11, 0.16);
+
+  --danger: #EF4444;
+  --danger-dark: #EF4444;
+  --danger-text: #EF4444;
+  --danger-soft: rgba(239, 68, 68, 0.16);
+
+  --color-on-success: #FFFFFF;
+  --color-on-danger: #FFFFFF;
+  --color-on-warning: #0F172A;
+  --color-on-surface: var(--color-text-primary);
+  --color-on-surface-muted: var(--color-text-secondary);
+  --color-on-surface-light: var(--color-text-primary);
+
+  --success-gradient-start: rgba(34, 197, 94, 0.16);
+  --success-gradient-end: rgba(34, 197, 94, 0.06);
+  --danger-gradient-start: rgba(239, 68, 68, 0.16);
+  --danger-gradient-end: rgba(239, 68, 68, 0.06);
+
+  /* Shared semantic references */
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-active: var(--primary-active);
+  --color-primary-subtle: var(--primary-soft);
+  --color-primary-contrast: var(--color-on-primary);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-info: #3B82F6;
+  --color-accent: #14B8A6;
+  --color-accent-hover: #0F9F91;
+  --color-accent-soft: rgba(20, 184, 166, 0.16);
+
+  /* Surface references */
+  --background: var(--color-background);
+  --surface: var(--color-surface);
+  --surface-elevated: var(--color-surface-elevated);
+  --surface-muted: var(--color-surface-muted);
+  --surface-light: var(--color-surface-light);
+
+  /* Text shortcuts */
+  --text: var(--color-text-primary);
+  --text-secondary: var(--color-text-secondary);
+  --text-muted: var(--color-text-muted);
+
+  /* Border shortcuts */
+  --border: var(--color-border);
+  --border-strong: var(--color-border-strong);
+  --surface-border: var(--color-surface-border);
+  --overlay: var(--color-overlay);
+}

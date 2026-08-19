@@ -1,0 +1,641 @@
+/* Final report-inspired UI consistency layer. Keep existing theme colors. */
+:root {
+  --ui-radius-panel: 14px;
+  --ui-radius-control: 10px;
+  --ui-gap-section: 18px;
+  --ui-control-height: 42px;
+}
+
+/* Consistent page rhythm */
+main .page-container {
+  gap: var(--ui-gap-section) !important;
+}
+main .page-container > * + * {
+  margin-top: 0 !important;
+}
+
+/* Uniform professional panels */
+.page-standard,
+.page-standard-panel,
+.report-panel,
+.ui-card,
+.ui-table,
+.dashboard-section,
+.dashboard-page .dashboard-section,
+.dashboard-page .dashboard-kpi,
+.dashboard-page .dashboard-counter-panel,
+.dashboard-page .dashboard-chart-panel,
+.dashboard-page .dashboard-collection-panel,
+.dashboard-page .dashboard-summary-panel,
+.dashboard-page .dashboard-list-panel,
+.dashboard-page .dashboard-activity-panel,
+.sales-page .sales-section,
+.easy-return-page .return-section,
+.settings-page .settings-section {
+  border: 1px solid var(--border) !important;
+  border-radius: var(--ui-radius-panel) !important;
+  background: var(--surface) !important;
+  box-shadow: none !important;
+}
+
+.page-standard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-gap-section);
+}
+
+.page-standard .page-toolbar,
+.page-standard .page-filters,
+.page-standard .page-empty,
+.page-standard .page-summary,
+.page-standard .page-table,
+.page-standard .page-pagination {
+  border: 1px solid var(--border);
+  border-radius: var(--ui-radius-panel);
+  background: var(--surface);
+}
+
+.page-standard .page-toolbar,
+.page-standard .page-filters,
+.page-standard .page-summary {
+  padding: 16px;
+}
+
+/* Controls: consistent size and click targets */
+main .page-container button:not([aria-hidden="true"]),
+main .page-container input:not([type="checkbox"]):not([type="radio"]),
+main .page-container select,
+main .page-container textarea,
+.page-standard button,
+.page-standard input:not([type="checkbox"]):not([type="radio"]),
+.page-standard select,
+.page-standard textarea {
+  box-sizing: border-box;
+}
+
+main .page-container input:not([type="checkbox"]):not([type="radio"]),
+main .page-container select,
+.page-standard input:not([type="checkbox"]):not([type="radio"]),
+.page-standard select {
+  min-height: var(--ui-control-height) !important;
+  border-radius: var(--ui-radius-control) !important;
+}
+
+main .page-container textarea,
+.page-standard textarea {
+  border-radius: var(--ui-radius-control) !important;
+}
+
+main .page-container button,
+.page-standard button {
+  min-height: 40px;
+  border-radius: var(--ui-radius-control) !important;
+}
+
+.page-standard .page-actions,
+.page-standard .button-row,
+.page-standard .toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Better empty states everywhere */
+.page-empty {
+  display: flex;
+  min-height: 180px;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+  text-align: center;
+}
+
+.page-empty__inner {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  max-width: 460px;
+}
+
+.page-empty__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.page-empty__text {
+  font-size: .85rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+/* Plain colspan empty rows become contained and intentional */
+main .page-container table tbody td[colspan],
+.page-standard table tbody td[colspan] {
+  padding: 26px 18px !important;
+  min-height: 110px;
+  text-align: center !important;
+  color: var(--text-secondary) !important;
+  background: var(--surface-light) !important;
+  border-bottom: 0 !important;
+}
+
+/* Tables use the report page geometry */
+.page-standard .page-table,
+.page-standard .table-shell {
+  overflow: hidden;
+}
+
+.page-standard .table-scroll,
+.page-standard .table-shell > div,
+.page-standard .page-table > div {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.page-standard table,
+.dashboard-page table,
+.sales-page table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  width: 100%;
+}
+
+.page-standard th,
+.dashboard-page th,
+.sales-page th {
+  background: var(--surface-muted) !important;
+  color: var(--text-secondary) !important;
+  padding: 12px 14px !important;
+  font-size: .75rem !important;
+  font-weight: 700 !important;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.page-standard td,
+.dashboard-page td,
+.sales-page td {
+  padding: 12px 14px !important;
+  color: var(--text) !important;
+  vertical-align: middle;
+}
+
+.page-standard tbody tr + tr td,
+.dashboard-page tbody tr + tr td,
+.sales-page tbody tr + tr td {
+  border-top: 1px solid var(--border) !important;
+}
+
+/* Pagination always has breathing room */
+.page-standard .page-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 14px;
+}
+
+
+.page-standard > .flex.flex-col,
+.page-standard > .flex.items-center,
+.page-standard > .page-toolbar {
+  border: 1px solid var(--border);
+  border-radius: var(--ui-radius-panel);
+  background: var(--surface);
+  padding: 16px 18px;
+}
+.page-standard > .mt-6 {
+  margin-top: 0 !important;
+  border: 1px solid var(--border);
+  border-radius: var(--ui-radius-panel);
+  background: var(--surface);
+  padding: 12px 14px;
+}
+
+/* Dashboard refinements */
+.dashboard-page {
+  gap: 18px !important;
+}
+.dashboard-page .dashboard-kpi {
+  padding: 18px !important;
+  min-height: 132px;
+  overflow: hidden;
+}
+.dashboard-page .dashboard-kpi span,
+.dashboard-page .dashboard-kpi p {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+.dashboard-page .dashboard-kpi__label,
+.dashboard-page .dashboard-kpi__foot {
+  display: block;
+  line-height: 1.35;
+}
+.dashboard-page .dashboard-counter-panel {
+  padding: 10px 14px !important;
+}
+.dashboard-page .dashboard-chart-panel,
+.dashboard-page .dashboard-collection-panel,
+.dashboard-page .dashboard-summary-panel,
+.dashboard-page .dashboard-list-panel,
+.dashboard-page .dashboard-activity-panel {
+  overflow: hidden;
+}
+.dashboard-page .dashboard-quick-actions {
+  align-content: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+}
+.dashboard-page .dashboard-quick-actions > button {
+  min-height: 42px !important;
+  height: 42px !important;
+  flex: 0 0 auto;
+}
+.dashboard-page .dashboard-manage-products {
+  margin-top: 12px;
+  min-height: 40px !important;
+  height: 40px !important;
+}
+.dashboard-page .dashboard-recent-invoices {
+  justify-content: flex-start !important;
+}
+.dashboard-page .dashboard-recent-invoices .dashboard-table {
+  margin-top: 4px;
+}
+
+/* Sales POS becomes a clean two-panel workspace */
+.sales-page .sales-section {
+  padding: 18px !important;
+}
+.sales-page .sales-section + .sales-section {
+  margin-top: 0;
+}
+.sales-page .pos-search-shell {
+  display: grid;
+  gap: 10px;
+}
+.sales-page .pos-search-row {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+}
+.sales-page .pos-search-row input {
+  flex: 1 1 auto;
+}
+.sales-page .pos-result-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+.sales-page .pos-result {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--ui-radius-control);
+  background: var(--surface-muted);
+  padding: 11px 12px;
+}
+.sales-page .pos-item {
+  border: 1px solid var(--border) !important;
+  border-radius: var(--ui-radius-panel) !important;
+  background: var(--surface-muted) !important;
+  padding: 14px !important;
+}
+.sales-page .pos-item + .pos-item {
+  margin-top: 10px;
+}
+.sales-page .pos-empty,
+.sales-page .pos-total-panel {
+  border: 1px solid var(--border);
+  border-radius: var(--ui-radius-panel);
+  background: var(--surface-light);
+}
+.sales-page .pos-empty {
+  min-height: 160px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 28px;
+  color: var(--text-secondary);
+}
+
+/* Easy Return */
+.easy-return-page .return-section {
+  padding: 18px !important;
+}
+.easy-return-page .return-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--ui-radius-panel);
+  background: var(--surface);
+}
+.easy-return-page .return-search,
+.easy-return-page .return-list {
+  border: 1px solid var(--border);
+  border-radius: var(--ui-radius-panel);
+  background: var(--surface);
+  padding: 16px;
+}
+
+
+/* Inventory / Store */
+.inventory-summary-grid {
+  align-items: stretch;
+}
+.inventory-summary-card {
+  min-width: 0;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--ui-radius-panel);
+  background: var(--surface);
+}
+.inventory-summary-card p:last-child {
+  font-size: 1.55rem;
+  line-height: 1.05;
+  margin-top: 8px;
+}
+.inventory-filters {
+  border: 1px solid var(--border);
+  border-radius: var(--ui-radius-panel);
+  background: var(--surface);
+  padding: 14px;
+}
+.inventory-category {
+  border: 1px solid var(--border);
+  border-radius: var(--ui-radius-panel);
+  background: var(--surface);
+}
+.inventory-category > div:first-child {
+  border-radius: var(--ui-radius-panel) var(--ui-radius-panel) 0 0 !important;
+}
+.inventory-category > div:last-child {
+  border-radius: 0 0 var(--ui-radius-panel) var(--ui-radius-panel);
+}
+.inventory-category > div:first-child > div:last-child > div {
+  border: 1px solid var(--border);
+  border-radius: var(--ui-radius-control);
+  background: var(--surface);
+}
+.inventory-movements {
+  border: 1px solid var(--border);
+  border-radius: var(--ui-radius-panel);
+  background: var(--surface);
+  padding: 16px;
+}
+@media (max-width: 900px) {
+  .inventory-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Settings */
+.settings-page > .settings-message {
+  border: 1px solid var(--border) !important;
+  border-radius: var(--ui-radius-panel) !important;
+  background: var(--surface-muted) !important;
+  padding: 14px 16px !important;
+}
+.settings-page .settings-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--ui-radius-panel);
+  background: var(--surface);
+}
+.settings-page .settings-subpanel {
+  border: 1px solid var(--border);
+  border-radius: var(--ui-radius-panel);
+  background: var(--surface-muted);
+  padding: 16px;
+}
+.settings-page .settings-danger-panel {
+  border: 1px solid color-mix(in srgb, var(--danger) 35%, var(--border)) !important;
+  border-radius: var(--ui-radius-panel) !important;
+  background: var(--surface-muted) !important;
+}
+
+/* Compact report metrics: avoid oversized blocks while retaining hierarchy */
+.report-summary-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+.report-summary-card {
+  min-height: 78px;
+  padding: 12px 14px !important;
+  border-radius: var(--ui-radius-control) !important;
+}
+.report-summary-card__value {
+  font-size: 1.2rem;
+}
+
+
+.report-summary-grid--compact {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 0;
+}
+.report-statement-panel {
+  border: 1px solid var(--border);
+  border-radius: var(--ui-radius-panel);
+  background: var(--surface-muted);
+  padding: 18px;
+}
+.report-statement-panel .flex {
+  min-height: 52px;
+}
+@media (max-width: 640px) {
+  .report-summary-grid--compact {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 900px) {
+  .report-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .report-summary-grid {
+    grid-template-columns: 1fr;
+  }
+  .page-standard .page-pagination {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .page-standard .page-pagination > * {
+    justify-content: center;
+  }
+}
+
+/* Expense page */
+.expense-page {
+  padding-top: 0 !important;
+}
+.expense-page > .flex.flex-col,
+.expense-page > .flex.items-center {
+  border: 1px solid var(--border);
+  border-radius: var(--ui-radius-panel);
+  background: var(--surface);
+  padding: 16px 18px;
+}
+.expense-page .page-table {
+  overflow: hidden;
+}
+
+/* Easy return inner panels */
+.easy-return-page .return-section > .return-search,
+.easy-return-page .return-section > .return-list {
+  width: 100%;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--ui-radius-panel);
+  background: var(--surface);
+}
+.easy-return-page .return-section > .return-search > div:first-child,
+.easy-return-page .return-section > .return-list > div:first-child {
+  margin-bottom: 14px !important;
+}
+.easy-return-page .return-list > div.overflow-x-auto {
+  border: 1px solid var(--border);
+  border-radius: var(--ui-radius-panel);
+}
+
+/* Payment/ledger pages */
+.page-standard .page-table {
+  border: 1px solid var(--border);
+  border-radius: var(--ui-radius-panel);
+  background: var(--surface);
+  overflow: hidden;
+}
+.page-standard .page-table + .mt-6 {
+  margin-top: 0 !important;
+}
+.page-standard > .page-standard__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-gap-section);
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: var(--primary);
+}
+
+/* Make report filter widths depend on actual filter count */
+.report-filters__grid {
+  align-items: end;
+}
+.report-filters__actions {
+  margin-top: 2px;
+}
+
+.dashboard-page button,
+.sales-page button,
+.easy-return-page button,
+.settings-page button {
+  border-radius: var(--ui-radius-control) !important;
+}
+.inventory-category td:first-child {
+  min-width: 280px;
+  max-width: 360px;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+.inventory-category table {
+  min-width: 1080px;
+}
+
+
+/* World-class sales workspace: calm, dense and task-focused. */
+.sales-page { gap: 14px !important; }
+.sales-page-header { display:flex; align-items:flex-end; justify-content:space-between; gap:20px; padding:2px 2px 4px; }
+.sales-page-header p { margin-top:5px; color:var(--text-secondary); font-size:12px; line-height:1.45; max-width:650px; }
+.sales-page-kicker { display:block; margin-bottom:3px; color:var(--primary); font-size:10px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+.sales-view-switch { display:flex; align-items:center; gap:4px; padding:4px; border:1px solid var(--border); border-radius:11px; background:var(--surface-muted); }
+.sales-view-switch button { min-height:35px !important; display:flex; align-items:center; justify-content:center; gap:6px; padding:0 12px; border:0; border-radius:8px !important; background:transparent; color:var(--text-secondary); font-size:11px; font-weight:750; cursor:pointer; }
+.sales-view-switch button:hover { color:var(--text); }
+.sales-view-switch button.active { background:var(--surface); color:var(--primary); box-shadow:0 1px 3px rgba(15,23,42,.08); }
+.sales-history-shell { border:1px solid var(--border); border-radius:16px; background:var(--surface); overflow:hidden; }
+@media (max-width:760px){.sales-page-header{align-items:flex-start;flex-direction:column}.sales-view-switch{width:100%}.sales-view-switch button{flex:1}}
+
+/* Final compact enterprise treatment */
+.settings-managed-view{margin-top:0}
+.settings-managed-view > .wc-page{padding:0!important}
+.settings-managed-view .page-container{max-width:none!important}
+.settings-managed-view .page-header{margin-bottom:12px!important}
+.settings-managed-view .ui-card{box-shadow:none}
+
+.ledger-page{gap:14px!important}
+.ledger-hero{display:flex;align-items:end;justify-content:space-between;gap:24px;padding:18px 20px;border:1px solid var(--border);border-radius:16px;background:var(--surface);box-shadow:var(--shadow-xs)}
+.ledger-hero-copy>span{display:block;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--primary);margin-bottom:5px}
+.ledger-hero-copy h1{margin:0;font-size:28px;line-height:1.1;color:var(--text)}
+.ledger-hero-copy p{margin:6px 0 0;font-size:12px;color:var(--text-secondary)}
+.ledger-toolbar{display:flex;align-items:end;gap:9px;min-width:360px}
+.ledger-toolbar>div{min-width:230px}
+.ledger-toolbar label{display:block;font-size:11px;font-weight:700;color:var(--text-secondary);margin-bottom:5px}
+.ledger-toolbar select{width:100%;height:40px;border:1px solid var(--border);border-radius:10px;background:var(--surface-muted);color:var(--text);padding:0 10px;outline:0}
+.ledger-toolbar select:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft)}
+.ledger-summary-grid{display:grid;grid-template-columns:1.35fr 1fr 1fr 1fr;gap:10px}
+.ledger-summary-card{padding:13px 15px;border:1px solid var(--border);border-radius:13px;background:var(--surface)}
+.ledger-summary-card span{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:750;color:var(--text-secondary)}
+.ledger-summary-card span svg{color:var(--primary)}
+.ledger-summary-card strong{display:block;margin-top:6px;font-size:17px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ledger-summary-card strong.is-warning{color:var(--warning)}
+.ledger-summary-card strong.is-good{color:var(--success)}
+.ledger-summary-card small{display:block;margin-top:2px;font-size:10px;color:var(--text-muted)}
+.ledger-table-card{border:1px solid var(--border);border-radius:15px;background:var(--surface);overflow:hidden}
+.ledger-table-head{display:flex;align-items:end;justify-content:space-between;padding:13px 15px;border-bottom:1px solid var(--border);background:var(--surface-muted)}
+.ledger-table-head span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.1em;font-weight:800;color:var(--text-muted)}
+.ledger-table-head h2{margin:3px 0 0;font-size:15px;color:var(--text)}
+.ledger-table-head small{font-size:10px;color:var(--text-secondary)}
+.ledger-table-card table{width:100%;border-collapse:collapse;font-size:11px}
+.ledger-table-card th{padding:10px 13px;background:var(--surface-muted);text-align:left;color:var(--text-secondary);font-size:10px;font-weight:800;white-space:nowrap}
+.ledger-table-card td{padding:10px 13px;border-top:1px solid var(--border);color:var(--text-secondary);white-space:nowrap}
+.ledger-table-card tbody tr:hover{background:var(--surface-light)}
+.ledger-table-card .num{text-align:right}
+.ledger-table-card .strong-cell,.ledger-table-card .balance{color:var(--text);font-weight:700}
+.ledger-table-card .debit{color:var(--danger)}
+.ledger-table-card .credit{color:var(--success)}
+.ledger-empty{text-align:center!important;padding:44px!important;color:var(--text-muted)!important}
+.ledger-alert{padding:10px 13px;border:1px solid var(--danger-soft);border-radius:10px;background:var(--danger-soft);color:var(--danger);font-size:12px}
+.ledger-loading{min-height:250px;display:grid;place-items:center}
+.ledger-empty-state{min-height:260px;display:grid;place-items:center;align-content:center;gap:7px;padding:30px;border:1px dashed var(--border-strong);border-radius:14px;background:var(--surface);color:var(--text-muted);text-align:center}
+.ledger-empty-state svg{color:var(--primary)}
+.ledger-empty-state strong{color:var(--text);font-size:13px}
+.ledger-empty-state span{font-size:11px}
+
+.report-page{gap:12px!important}
+.world-reports .report-tabs{padding:4px;gap:4px;max-width:100%;overflow:auto;flex-wrap:nowrap;scrollbar-width:thin}
+.world-reports .report-panel{padding:0!important}
+.world-reports .report-filters{display:grid;grid-template-columns:1fr;gap:8px;padding:10px 12px!important;border-radius:12px!important}
+.world-reports .report-filters .section-title{margin:0!important;font-size:12px!important}
+.world-reports .report-filters__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;align-items:end}
+.world-reports .report-field label{font-size:10px!important;margin-bottom:4px!important}
+.world-reports .report-field input,.world-reports .report-field select{height:36px!important;padding:0 9px!important;font-size:11px!important;border-radius:9px!important}
+.world-reports .report-filters__actions{justify-content:flex-end;display:flex;margin:0!important}
+.world-reports .report-action--primary{height:36px!important;padding:0 13px!important;font-size:11px!important;border-radius:9px!important}
+
+/* Compact master-data headers: one primary action, no reset/new duplicate pair. */
+.world-products .page-container,.world-product .page-container{gap:12px!important}
+.world-module.page-container{gap:12px!important}
+.world-module .page-header{padding:15px 17px!important}
+.sales-page--pos{height:calc(100vh - 68px);min-height:0!important;overflow:hidden}
+.sales-page--pos .sales-page-header{flex:none}
+.sales-page--pos .pos-workspace{flex:1;min-height:0}
+
+/* Keep high-frequency workspaces dense without hiding needed information. */
+.world-module.page-container{gap:12px!important}
+.world-module .page-header{padding:15px 17px!important}
+.world-module .page-header .page-title{font-size:24px!important}
+.sales-page--pos{height:calc(100vh - 68px);min-height:0!important;overflow:hidden}
+.sales-page--pos .sales-page-header{flex:none}
+.sales-page--pos .pos-workspace{flex:1;min-height:0}

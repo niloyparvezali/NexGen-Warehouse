@@ -1,0 +1,7 @@
+.app-layout {
+  min-height: 100vh;
+  background: var(--color-background);
+  color: var(--color-text);
+}
+.brand-logo-text { filter: brightness(0); }
+html[data-theme="dark"] .brand-logo-text { filter: brightness(0) invert(1); }

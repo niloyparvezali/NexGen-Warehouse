@@ -1,0 +1,721 @@
+/*
+ * NexGen Store — Unified Form System
+ * One visual system for every modal form, page form, filter form and field.
+ * Keep form markup semantic; avoid decorative nested cards.
+ */
+
+:root {
+  --form-control-height: 46px;
+  --form-radius: 10px;
+  --form-section-gap: 22px;
+  --form-grid-gap: 16px;
+}
+
+.wc-form,
+.form-system {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  color: var(--color-text-primary);
+}
+
+.wc-form > *,
+.form-system > * {
+  min-width: 0;
+}
+
+/* Errors */
+.wc-form-error,
+.purchase-error {
+  margin: 0 0 var(--form-section-gap);
+  padding: 11px 13px;
+  border: 1px solid color-mix(in srgb, var(--color-danger) 42%, var(--color-border));
+  border-radius: var(--form-radius);
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+/* Flat sections: borders separate content; they do not create cards inside cards. */
+.wc-form-section,
+.purchase-compact-section {
+  min-width: 0;
+  padding: 0 0 var(--form-section-gap);
+  margin: 0 0 var(--form-section-gap);
+  border: 0;
+  border-bottom: 1px solid var(--color-border);
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.wc-form-section:last-of-type,
+.purchase-compact-section:last-of-type {
+  margin-bottom: 0;
+}
+
+.wc-form-section__header,
+.purchase-section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 0 16px;
+  padding: 0;
+  border: 0;
+}
+
+.wc-form-section__title,
+.purchase-section-head h3 {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.wc-form-section__hint,
+.purchase-section-head small {
+  display: block;
+  max-width: 720px;
+  margin: 5px 0 0;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.purchase-section-head > div > span {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--color-primary);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.wc-form-grid,
+.purchase-meta-grid,
+.purchase-fields-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--form-grid-gap);
+  align-items: start;
+  min-width: 0;
+}
+
+.wc-form-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.wc-form-grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.wc-form-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.wc-form-grid:not([class*="--"]) { grid-template-columns: minmax(0, 1fr); }
+
+.wc-form-grid > *,
+.purchase-meta-grid > *,
+.purchase-fields-grid > * {
+  min-width: 0;
+}
+
+/* Every label and native control follows the same readable scale. */
+.wc-form label,
+.purchase-form-v2 label,
+.wc-modal-content form label {
+  display: block;
+  margin: 0 0 7px;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+.wc-form .ui-field,
+.wc-form input:not([type="checkbox"]):not([type="radio"]),
+.wc-form select,
+.wc-form textarea,
+.wc-modal-content form input:not([type="checkbox"]):not([type="radio"]),
+.wc-modal-content form select,
+.wc-modal-content form textarea {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+  border: 1px solid var(--color-input-border);
+  border-radius: var(--form-radius);
+  background: var(--color-input-background);
+  background-image: none;
+  color: var(--color-input-text);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  box-shadow: none;
+  outline: none;
+  transition: border-color .16s ease, background-color .16s ease, box-shadow .16s ease;
+}
+
+.wc-form input:not([type="checkbox"]):not([type="radio"]),
+.wc-form select,
+.wc-modal-content form input:not([type="checkbox"]):not([type="radio"]),
+.wc-modal-content form select {
+  height: var(--form-control-height);
+  min-height: var(--form-control-height);
+  padding: 0 13px;
+}
+
+.wc-form textarea,
+.wc-modal-content form textarea {
+  min-height: 108px;
+  padding: 11px 13px;
+  resize: vertical;
+}
+
+.wc-form input::placeholder,
+.wc-form textarea::placeholder,
+.wc-modal-content form input::placeholder,
+.wc-modal-content form textarea::placeholder {
+  color: var(--color-text-muted);
+  opacity: 1;
+  font-weight: 400;
+}
+
+.wc-form input:hover:not(:disabled),
+.wc-form select:hover:not(:disabled),
+.wc-form textarea:hover:not(:disabled),
+.wc-modal-content form input:hover:not(:disabled),
+.wc-modal-content form select:hover:not(:disabled),
+.wc-modal-content form textarea:hover:not(:disabled) {
+  border-color: var(--color-border-strong);
+}
+
+.wc-form input:focus,
+.wc-form select:focus,
+.wc-form textarea:focus,
+.wc-modal-content form input:focus,
+.wc-modal-content form select:focus,
+.wc-modal-content form textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
+
+.wc-form input:disabled,
+.wc-form select:disabled,
+.wc-form textarea:disabled {
+  cursor: not-allowed;
+  opacity: .58;
+}
+
+.wc-form select,
+.wc-modal-content form select {
+  color: var(--color-input-text);
+  color-scheme: dark;
+  cursor: pointer;
+}
+
+html[data-theme="light"] .wc-form select,
+html.light .wc-form select,
+html[data-theme="light"] .wc-modal-content form select,
+html.light .wc-modal-content form select {
+  color-scheme: light;
+}
+
+.wc-form select option,
+.wc-modal-content form select option {
+  background: var(--color-surface-elevated);
+  color: var(--color-text-primary);
+  font-size: 14px;
+}
+
+.wc-form input[type="date"],
+.wc-form input[type="number"] {
+  color: var(--color-input-text);
+}
+
+.wc-form input[type="number"]::-webkit-inner-spin-button,
+.wc-form input[type="number"]::-webkit-outer-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+
+.wc-form input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.wc-form input[type="file"] {
+  height: auto;
+  min-height: var(--form-control-height);
+  padding: 9px 11px;
+}
+
+/* Input component */
+.form-control-wrap {
+  width: 100%;
+  min-width: 0;
+}
+
+.form-control-label {
+  display: block;
+  margin: 0 0 7px;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+.form-control-error {
+  margin: 6px 0 0;
+  color: var(--color-danger);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.form-control {
+  width: 100%;
+  height: var(--form-control-height);
+  min-height: var(--form-control-height);
+  border: 1px solid var(--color-input-border);
+  border-radius: var(--form-radius);
+  background: var(--color-input-background);
+  color: var(--color-input-text);
+  padding: 0 13px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  outline: none;
+  box-shadow: none;
+}
+
+.form-control::placeholder { color: var(--color-text-muted); opacity: 1; }
+.form-control:hover:not(:disabled) { border-color: var(--color-border-strong); }
+.form-control:focus { border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--primary-soft); }
+.form-control:disabled { cursor: not-allowed; opacity: .58; }
+
+/* Action area is a separator, never another card. */
+.wc-form-actions,
+.purchase-form-actions,
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin: 0;
+  padding: 18px 0 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.ui-button {
+  min-width: 112px;
+  min-height: 42px;
+  height: 42px;
+  padding: 0 16px;
+  border: 1px solid transparent;
+  border-radius: 9px !important;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow: none !important;
+}
+
+.ui-button:hover:not(:disabled) { transform: none; }
+
+.ui-button--primary {
+  background: var(--color-button-primary);
+  color: var(--color-text-inverse);
+}
+.ui-button--primary:hover:not(:disabled) { background: var(--color-button-primary-hover); }
+.ui-button--primary:active:not(:disabled) { background: var(--color-button-primary-active); }
+
+.ui-button--secondary {
+  border-color: var(--color-border);
+  background: var(--color-button-secondary);
+  color: var(--color-text-primary);
+}
+.ui-button--secondary:hover:not(:disabled) { background: var(--color-button-secondary-hover); }
+.ui-button--secondary:active:not(:disabled) { background: var(--color-button-secondary-active); }
+
+.ui-button--outline {
+  border-color: var(--color-border);
+  background: transparent;
+  color: var(--color-text-primary);
+}
+.ui-button--outline:hover:not(:disabled) { background: var(--color-surface-muted); }
+
+.ui-button--ghost {
+  background: transparent;
+  color: var(--color-text-secondary);
+}
+.ui-button--ghost:hover:not(:disabled) { color: var(--color-text-primary); background: var(--color-surface-muted); }
+
+.ui-button--danger {
+  background: var(--color-danger);
+  color: #fff;
+}
+.ui-button--danger:hover:not(:disabled) { filter: brightness(1.08); }
+
+.ui-button--success {
+  background: var(--color-success);
+  color: #fff;
+}
+.ui-button--success:hover:not(:disabled) { filter: brightness(1.08); }
+
+.ui-button--sm { min-width: 92px; min-height: 36px; height: 36px; padding-inline: 12px; font-size: 12px; }
+.ui-button--md { min-height: 42px; height: 42px; }
+.ui-button--lg { min-height: 46px; height: 46px; padding-inline: 18px; font-size: 14px; }
+
+.ui-button:disabled { cursor: not-allowed; opacity: .58; }
+.ui-button:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+
+/* Modal: one surface, readable width, predictable scrolling. */
+.nx-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  padding: 20px;
+  overflow-y: auto;
+  background: var(--color-overlay);
+  backdrop-filter: blur(4px);
+}
+
+.nx-modal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(920px, calc(100vw - 40px));
+  max-height: calc(100dvh - 40px);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  box-shadow: 0 24px 70px rgba(0,0,0,.42);
+}
+
+.nx-modal--sm { width: min(520px, calc(100vw - 40px)); }
+.nx-modal--md { width: min(720px, calc(100vw - 40px)); }
+.nx-modal--lg { width: min(920px, calc(100vw - 40px)); }
+.nx-modal--xl { width: min(1120px, calc(100vw - 40px)); }
+
+.nx-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 58px;
+  padding: 0 18px;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.nx-modal__title {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: 18px;
+  font-weight: 750;
+  line-height: 1.25;
+}
+
+.nx-modal__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.nx-modal__close:hover {
+  border-color: var(--color-border);
+  background: var(--color-surface-muted);
+  color: var(--color-text-primary);
+}
+
+.wc-modal-content {
+  min-width: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 22px;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+}
+
+/* Purchase form — flat sections + one intentional total summary. */
+.purchase-form-v2 { gap: 0; }
+.purchase-form-v2 .purchase-compact-section { padding-bottom: 18px; margin-bottom: 18px; }
+.purchase-form-v2 .purchase-meta-grid { grid-template-columns: 1.35fr .9fr .9fr; }
+.purchase-form-v2 .purchase-fields-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.purchase-unified-search {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.purchase-unified-search input {
+  min-width: 0;
+}
+
+.purchase-search-hint {
+  margin: 7px 0 0;
+  color: var(--color-text-muted);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.purchase-search-results {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.purchase-result-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 9px;
+  background: var(--color-surface-secondary);
+  color: var(--color-text-primary);
+  text-align: left;
+  cursor: pointer;
+}
+
+.purchase-result-row:hover { border-color: var(--color-border-strong); background: var(--color-surface-muted); }
+.purchase-result-row strong { display: block; font-size: 13px; }
+.purchase-result-row small { display: block; margin-top: 3px; color: var(--color-text-secondary); font-size: 11px; }
+.purchase-result-row b { color: var(--color-text-primary); font-size: 13px; }
+.purchase-result-add { color: var(--color-primary); font-size: 12px; font-weight: 750; }
+
+.purchase-not-found {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px dashed var(--color-border-strong);
+  border-radius: 9px;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+}
+
+.purchase-summary-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(260px, .8fr);
+  gap: 16px;
+  margin: 0 0 18px;
+}
+
+.purchase-summary-grid > .purchase-compact-section {
+  margin: 0;
+}
+
+.purchase-total-card {
+  align-self: stretch;
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface-secondary);
+}
+
+.purchase-total-card > span {
+  display: block;
+  color: var(--color-text-secondary);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.purchase-total-card > strong {
+  display: block;
+  margin: 5px 0 14px;
+  color: var(--color-primary);
+  font-size: 25px;
+  line-height: 1.15;
+}
+
+.purchase-total-card > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 0;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-size: 12px;
+}
+
+.purchase-total-card b { color: var(--color-text-primary); }
+.purchase-total-card .purchase-total-due b { color: var(--color-warning); }
+
+.purchase-bottom-grid {
+  display: grid;
+  grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+  gap: 16px;
+  padding-top: 18px;
+  border-top: 1px solid var(--color-border);
+}
+
+.purchase-field-label { margin-bottom: 7px !important; }
+
+.purchase-upload {
+  min-height: 84px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  padding: 12px;
+  border: 1px dashed var(--color-border-strong);
+  border-radius: 10px;
+  background: var(--color-surface-secondary);
+  cursor: pointer;
+}
+
+.purchase-upload:hover,
+.purchase-upload.is-active {
+  border-color: var(--color-primary);
+  background: var(--primary-soft);
+}
+
+.purchase-upload strong { color: var(--color-text-primary); font-size: 13px; }
+.purchase-upload span { color: var(--color-text-muted); font-size: 11px; }
+.purchase-attachment-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 7px; font-size: 11px; color: var(--color-text-secondary); }
+.purchase-error--small { margin-top: 7px; margin-bottom: 0; padding: 8px 10px; font-size: 11px; }
+
+.purchase-items-section {
+  overflow-x: auto;
+}
+
+.purchase-items-section table {
+  width: 100%;
+  min-width: 720px;
+}
+
+
+/* Remove accidental panel-inside-panel treatment on the return workspace. */
+.easy-return-page {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 16px !important;
+  padding: 20px 22px 28px !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.easy-return-page .return-tabs {
+  width: fit-content;
+  max-width: 100%;
+  padding: 3px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-surface-muted);
+}
+
+.easy-return-page .return-section,
+.easy-return-page .return-search,
+.easy-return-page .return-list {
+  margin: 0;
+  padding: 0;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.easy-return-page .return-section > * {
+  min-width: 0;
+}
+
+.easy-return-page .return-search > div:first-child {
+  margin-bottom: 16px;
+}
+
+.easy-return-page .return-search input,
+.easy-return-page .return-list input {
+  min-height: 46px;
+  background: var(--color-input-background);
+  color: var(--color-input-text);
+  border: 1px solid var(--color-input-border);
+}
+
+.easy-return-page .return-search > div.mb-4 {
+  max-width: 760px;
+}
+
+@media (max-width: 900px) {
+  .purchase-form-v2 .purchase-meta-grid,
+  .purchase-form-v2 .purchase-fields-grid,
+  .purchase-summary-grid,
+  .purchase-bottom-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wc-form-grid--3,
+  .wc-form-grid--4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  :root { --form-grid-gap: 12px; }
+
+  .nx-modal-backdrop { padding: 10px; }
+  .nx-modal,
+  .nx-modal--sm,
+  .nx-modal--md,
+  .nx-modal--lg,
+  .nx-modal--xl {
+    width: calc(100vw - 20px);
+    max-height: calc(100dvh - 20px);
+    border-radius: 13px;
+  }
+
+  .nx-modal__header { min-height: 54px; padding-inline: 14px; }
+  .nx-modal__title { font-size: 16px; }
+  .wc-modal-content { padding: 16px; }
+
+  .wc-form-grid--2,
+  .wc-form-grid--3,
+  .wc-form-grid--4,
+  .purchase-unified-search {
+    grid-template-columns: 1fr;
+  }
+
+  .wc-form-section__header,
+  .purchase-section-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .wc-form-actions,
+  .purchase-form-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .wc-form-actions .ui-button,
+.purchase-form-actions .ui-button { width: 100%; }
+  .purchase-result-row { grid-template-columns: 1fr auto; }
+  .purchase-result-row .purchase-result-add { grid-column: 2; grid-row: 1 / span 2; }
+}

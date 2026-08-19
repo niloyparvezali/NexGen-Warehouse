@@ -1,0 +1,69 @@
+html[data-theme="dark"],
+html.dark,
+html:not([data-theme]) {
+  color-scheme: dark;
+  --color-background: #0A0A0A;
+  --color-background-secondary: #111111;
+  --color-surface: #171717;
+  --color-surface-secondary: #1C1C1C;
+  --color-surface-elevated: #202020;
+  --color-surface-muted: #262626;
+  --color-surface-light: #2A2A2A;
+
+  --color-text-primary: #FAFAFA;
+  --color-text-secondary: #A3A3A3;
+  --color-text-muted: #737373;
+  --color-text-disabled: #525252;
+  --color-text-inverse: #0A0A0A;
+  --color-text: var(--color-text-primary);
+
+  --color-border: #333333;
+  --color-border-subtle: #262626;
+  --color-border-strong: #404040;
+  --color-surface-border: #333333;
+  --color-input-background: #1C1C1C;
+  --color-input-border: #404040;
+  --color-input-focus: #3B82F6;
+
+  --color-button-primary: #3B82F6;
+  --color-button-primary-hover: #60A5FA;
+  --color-button-primary-active: #2563EB;
+  --color-button-secondary: #262626;
+  --color-button-secondary-hover: #303030;
+  --color-button-secondary-active: #383838;
+
+  --color-link: #60A5FA;
+  --color-link-hover: #93C5FD;
+  --color-icon: #A3A3A3;
+  --color-icon-muted: #737373;
+  --color-focus: #60A5FA;
+  --color-overlay: rgba(0, 0, 0, 0.58);
+  --color-shadow: rgba(0, 0, 0, 0.32);
+  --color-bg-gradient-start: #0A0A0A;
+  --color-bg-gradient-end: #111111;
+  --color-input-text: #FAFAFA;
+
+  --primary: #3B82F6;
+  --primary-hover: #60A5FA;
+  --primary-active: #2563EB;
+  --primary-soft: rgba(59, 130, 246, 0.14);
+  --primary-lighter: #60A5FA;
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-active: var(--primary-active);
+  --color-primary-subtle: var(--primary-soft);
+  --color-primary-contrast: #FFFFFF;
+
+  --color-success: #22C55E;
+  --color-success-soft: rgba(34,197,94,.13);
+  --color-success-text: #4ADE80;
+  --color-warning: #F59E0B;
+  --color-warning-soft: rgba(245,158,11,.13);
+  --color-danger: #EF4444;
+  --color-danger-soft: rgba(239,68,68,.13);
+  --color-info: #60A5FA;
+  --color-info-soft: rgba(96,165,250,.13);
+  --color-accent: #3B82F6;
+  --color-accent-hover: #60A5FA;
+  --color-accent-soft: rgba(59,130,246,.13);
+}

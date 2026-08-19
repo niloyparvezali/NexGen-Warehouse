@@ -1,0 +1,262 @@
+/* 
+ * Global Table System
+ * Provides consistent styling for all tables across the ERP/POS application
+ * Ensures perfect alignment, spacing, and responsive behavior
+ */
+
+/* Base Table Container */
+.ui-table {
+  position: relative;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+/* Standard Table Layout */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table.table-auto {
+  table-layout: auto;
+}
+
+/* Header Styling */
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+thead th {
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Body Styling */
+tbody {
+  position: relative;
+}
+
+tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition-property: background-color;
+  transition-duration: 150ms;
+  transition-timing-function: ease;
+}
+
+tbody tr:hover {
+  background-color: var(--surface-light);
+}
+
+/* Cell Styling */
+td {
+  padding: var(--space-3) var(--space-4);
+  vertical-align: middle;
+  font-size: 0.875rem;
+  color: var(--text);
+  word-break: break-word;
+}
+
+td.align-left {
+  text-align: left;
+}
+
+td.align-center {
+  text-align: center;
+}
+
+td.align-right {
+  text-align: right;
+}
+
+/* Row Height Consistency */
+tr {
+  height: auto;
+  min-height: 3rem;
+}
+
+/* Empty State */
+td[colspan] {
+  padding: 2.5rem var(--space-4);
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+/* Scrollable Container */
+.overflow-x-auto {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.overflow-x-auto table {
+  min-width: 100%;
+}
+
+/* Pagination Component */
+.ui-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-top: var(--space-6);
+}
+
+.ui-pagination span {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.ui-pagination .rounded-lg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.5rem;
+  background: var(--surface-muted);
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status-badge.active {
+  background: var(--success);
+  color: var(--text);
+}
+
+.status-badge.inactive {
+  background: var(--danger);
+  color: var(--text);
+}
+
+.status-badge.pending {
+  background: var(--warning);
+  color: var(--text);
+}
+
+/* Action Buttons Group */
+.action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-buttons button {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Money/Numeric Values */
+.money,
+.numeric {
+  font-family: 'Courier New', monospace;
+  text-align: right;
+}
+
+/* Responsive Behavior */
+@media (max-width: 768px) {
+  thead th {
+    padding: var(--space-2) var(--space-3);
+    font-size: 0.65rem;
+  }
+
+  td {
+    padding: var(--space-2) var(--space-3);
+    font-size: 0.8125rem;
+  }
+
+  tr {
+    min-height: 2.5rem;
+  }
+
+  .ui-pagination {
+    flex-direction: column;
+    gap: var(--space-2);
+    align-items: flex-start;
+  }
+
+  .ui-pagination > div {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  thead th {
+    padding: var(--space-2) var(--space-2);
+    font-size: 0.6rem;
+  }
+
+  td {
+    padding: var(--space-2) var(--space-2);
+    font-size: 0.75rem;
+  }
+
+  tr {
+    min-height: 2.25rem;
+  }
+
+  table.table-auto {
+    min-width: 500px;
+  }
+}
+
+/* Accessibility */
+tbody tr:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: -1px;
+}
+
+/* Print Styles */
+@media print {
+  .ui-pagination,
+  .ui-table,
+  table {
+    page-break-inside: avoid;
+  }
+
+  tbody tr {
+    page-break-inside: avoid;
+  }
+}
+
+/* Compact index-number column used by tables whose first column is "#".
+   Explicit colgroup sizing prevents table-fixed from expanding the index column. */
+.index-column-table {
+  table-layout: fixed;
+}
+
+.index-column-table > .index-column-group > .index-column {
+  width: 56px;
+}
+
+.index-column-table > thead > tr > th:first-child,
+.index-column-table > tbody > tr > td:first-child {
+  width: 56px;
+  min-width: 56px;
+  max-width: 56px;
+  padding-left: 8px;
+  padding-right: 8px;
+}

@@ -1,0 +1,168 @@
+:root {
+  --primary: #2563EB;
+  --primary-hover: #1D4ED8;
+  --primary-soft: rgba(37, 99, 235, 0.16);
+
+  --success: #22C55E;
+  --success-soft: rgba(34, 197, 94, 0.16);
+  --warning: #F59E0B;
+  --warning-soft: rgba(245, 158, 11, 0.16);
+  --danger: #EF4444;
+  --danger-soft: rgba(239, 68, 68, 0.16);
+
+  --background: #0F172A;
+  --surface: #1E293B;
+  --surface-elevated: #273449;
+  --surface-muted: #3B4A60;
+  --surface-light: #3B4A60;
+
+  --text: #F8FAFC;
+  --text-secondary: #CBD5E1;
+  --text-muted: #64748B;
+
+  --border: #334155;
+  --border-strong: #3B4A60;
+  --surface-border: #334155;
+  --overlay: rgba(2, 6, 23, 0.72);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  --shadow-xs: 0 1px 4px rgba(2, 6, 23, 0.08);
+  --shadow-sm: 0 8px 24px rgba(2, 6, 23, 0.16);
+  --shadow-md: 0 16px 40px rgba(2, 6, 23, 0.24);
+  --shadow-lg: 0 20px 56px rgba(2, 6, 23, 0.32);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+
+  --font-sans: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-size-page-title: 26px;
+  --font-size-section-title: 16.5px;
+  --font-size-body: 14px;
+  --font-size-small: 12.5px;
+
+  --page-padding-x: 28px;
+  --page-padding-y: 24px;
+  --section-gap: 22px;
+  --card-padding: 18px;
+}
+
+.light {
+  --background: #0F172A;
+  --surface: #1E293B;
+  --surface-elevated: #334155;
+  --surface-muted: #334155;
+  --surface-light: #3B4A60;
+
+  --text: #F8FAFC;
+  --text-secondary: #CBD5E1;
+  --text-muted: #64748B;
+
+  --border: #334155;
+  --border-strong: #475569;
+  --surface-border: #334155;
+  --overlay: rgba(2, 6, 23, 0.72);
+}
+
+:root,
+.light {
+  --bg-gradient-start: rgba(15, 23, 42, 0.98);
+  --bg-gradient-end: rgba(2, 6, 23, 1);
+}
+
+@theme {
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-surface-muted: var(--surface-muted);
+  --color-surface-light: var(--surface-light);
+  --color-text: var(--text);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+}
+
+body {
+  background: var(--background);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-body);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+* {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.45s ease-out both;
+}
+
+/* Typography helpers */
+.page-title {
+  font-size: var(--font-size-page-title);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--text);
+}
+
+.section-title {
+  font-size: var(--font-size-section-title);
+  font-weight: 600;
+  color: var(--text);
+}
+
+.content-text { font-size: var(--font-size-body); color: var(--text); }
+.secondary-text { font-size: var(--font-size-small); color: var(--text-secondary); }
+
+/* Button sizing */
+.btn-normal { height: 40px; min-height: 40px; padding-left: 14px; padding-right: 14px; }
+.btn-compact { height: 34px; min-height: 34px; padding-left: 10px; padding-right: 10px; }
+
+/* Stat card helpers */
+.stat-card { padding: var(--card-padding); }
+.stat-card-number { font-size: 28px; font-weight: 700; color: var(--text); }
+.stat-card-label { font-size: 12.5px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.14em; }
+
+/* Table defaults to improve readability and spacing */
+table { border-collapse: collapse; width: 100%; }
+table thead th { height: 44px; vertical-align: middle; font-size: 13.5px; text-align: left; color: var(--text-secondary); padding: 0 14px; }
+table tbody td { height: 46px; vertical-align: middle; font-size: 14px; padding: 0 14px; color: var(--text); }
+table tr { border-bottom: 1px solid var(--border); }
+
+/* Layout spacing */
+.page-container { padding-left: var(--page-padding-x); padding-right: var(--page-padding-x); padding-top: var(--page-padding-y); padding-bottom: var(--page-padding-y); gap: var(--section-gap); }
+
+button,
+input,
+select,
+textarea {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+

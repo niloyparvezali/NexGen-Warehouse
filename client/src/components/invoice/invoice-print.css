@@ -1,0 +1,76 @@
+.invoice-print-page {
+  width: 148mm;
+  min-height: 210mm;
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+  background: #ffffff;
+  color: #111827;
+}
+
+.invoice-print-loading,
+.invoice-print-error {
+  width: 148mm;
+  min-height: 210mm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  color: #111827;
+  background: #ffffff;
+}
+
+@page {
+  size: A5 portrait;
+  margin: 0;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+@media print {
+  html,
+  body {
+    width: 148mm;
+    height: 210mm;
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  .invoice-print-page,
+  .invoice-print-page * {
+    visibility: visible;
+  }
+
+  .invoice-print-page {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 148mm;
+    min-height: 210mm;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: #ffffff;
+  }
+
+  .invoice-print-page .invoice-preview-shell {
+    background: transparent !important;
+  }
+
+  .invoice-print-page .invoice-preview-stage {
+    padding: 0 !important;
+  }
+}

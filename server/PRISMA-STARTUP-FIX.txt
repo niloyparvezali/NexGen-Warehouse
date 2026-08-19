@@ -1,0 +1,6 @@
+The server now regenerates the Prisma Client automatically before dev/start and after npm install.
+
+Why: the Expense relation `Expense.category` was present in schema.prisma, but a stale generated Prisma Client can reject `include: { category: true }` with:
+"Invalid scalar field `category` for include statement on model Expense".
+
+After pulling/extracting this project, restart the server. No frontend code change is required for this specific error.

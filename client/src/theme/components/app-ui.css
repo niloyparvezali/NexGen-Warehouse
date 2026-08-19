@@ -1,0 +1,279 @@
+/* Shared application UI language inspired by the Reports & Analytics page. */
+:root {
+  --ui-radius-sm: 10px;
+  --ui-radius-md: 12px;
+  --ui-radius-lg: 14px;
+  --ui-control-height: 40px;
+  --ui-table-min-width: 760px;
+}
+
+main .page-container {
+  width: 100%;
+  max-width: 1640px;
+  margin-inline: auto;
+  padding: 20px 22px 28px;
+  gap: 18px;
+}
+
+main .page-container > * { min-width: 0; }
+main .page-container:not(.report-page) { display: grid; }
+
+.page-title {
+  font-size: clamp(1.45rem, 1.15rem + 0.55vw, 1.8rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+}
+
+.section-title { font-size: 1rem; line-height: 1.25; }
+.secondary-text { line-height: 1.45; }
+
+.page-header {
+  display: grid !important;
+  gap: 16px !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--ui-radius-lg) !important;
+  background: var(--surface) !important;
+  padding: 18px 20px !important;
+  box-shadow: none !important;
+}
+
+.page-header .page-title { margin: 0; }
+.page-header p { max-width: 760px; }
+
+.ui-card,
+main .page-container > .rounded-xl.border,
+main .page-container > .rounded-2xl.border {
+  border-color: var(--border) !important;
+  background: var(--surface) !important;
+  box-shadow: none !important;
+}
+
+.ui-card { border-radius: var(--ui-radius-lg) !important; }
+
+main .page-container input:not([type="checkbox"]):not([type="radio"]),
+main .page-container select,
+main .page-container textarea,
+.ui-field {
+  min-width: 0;
+  min-height: var(--ui-control-height);
+  border: 1px solid var(--border) !important;
+  border-radius: var(--ui-radius-sm) !important;
+  background: var(--surface-light) !important;
+  color: var(--text) !important;
+  box-shadow: none !important;
+  padding: 8px 11px;
+}
+
+main .page-container input::placeholder,
+main .page-container textarea::placeholder { color: var(--text-muted); opacity: 1; }
+
+main .page-container input:focus,
+main .page-container select:focus,
+main .page-container textarea:focus,
+.ui-field:focus {
+  outline: none;
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px var(--primary-soft) !important;
+}
+
+main .page-container input[type="date"],
+main .page-container input[type="number"],
+main .page-container select { height: var(--ui-control-height); }
+
+.ui-button {
+  min-height: 38px !important;
+  height: 38px;
+  border-radius: var(--ui-radius-sm) !important;
+  padding-inline: 13px !important;
+  border: 1px solid transparent;
+  font-size: 0.84rem;
+  font-weight: 650;
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow: none !important;
+}
+
+.ui-button[data-ui-size="sm"] { min-height: 36px !important; height: 36px; padding-inline: 12px !important; }
+.ui-button:hover:not(:disabled) { transform: translateY(-1px); }
+.ui-button:disabled { transform: none; }
+.ui-button--outline,
+.ui-button--secondary { border-color: var(--border) !important; }
+
+.ui-tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.ui-tab {
+  min-height: 36px;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--ui-radius-sm) !important;
+  padding: 0 13px;
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+.ui-tab:hover { background: var(--surface-muted); color: var(--text); }
+.ui-tab.is-active { background: var(--surface-muted); color: var(--text); }
+
+main .page-container table,
+.ui-table table {
+  width: 100%;
+  min-width: var(--ui-table-min-width);
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: auto;
+}
+
+main .page-container table thead th,
+.ui-table th {
+  height: 44px;
+  padding: 10px 14px !important;
+  border-bottom: 1px solid var(--border-strong) !important;
+  background: var(--surface-muted) !important;
+  color: var(--text-secondary) !important;
+  font-size: 0.76rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+main .page-container table tbody td,
+.ui-table td {
+  padding: 11px 14px !important;
+  border-bottom: 1px solid var(--border) !important;
+  color: var(--text) !important;
+  font-size: 0.82rem !important;
+  line-height: 1.4;
+  vertical-align: middle;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+main .page-container table tbody tr:last-child td,
+.ui-table tbody tr:last-child td { border-bottom: 0 !important; }
+
+main .page-container table tbody tr:hover td,
+.ui-table tbody tr:hover td { background: var(--surface-light); }
+
+.ui-table {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--ui-radius-lg);
+  background: var(--surface);
+}
+.ui-table > div { overflow-x: auto; }
+
+main .page-container table td:first-child,
+main .page-container table .product-name {
+  min-width: 190px;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+main .page-container table td:last-child,
+main .page-container table th:last-child { white-space: nowrap; }
+
+main .page-container .inventory-table table { min-width: 1080px; }
+main .page-container .inventory-table td:first-child,
+main .page-container .inventory-table th:first-child { min-width: 260px; }
+
+.status-pill,
+main .page-container table .rounded-full,
+main .page-container table .rounded {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 24px;
+  border-radius: 999px !important;
+  padding: 3px 9px !important;
+  font-size: 0.72rem !important;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.ui-pagination {
+  border: 1px solid var(--border) !important;
+  border-radius: var(--ui-radius-lg) !important;
+  background: var(--surface) !important;
+  box-shadow: none !important;
+  padding: 12px 14px !important;
+}
+
+.report-page { gap: 18px; }
+.report-tabs { margin-bottom: 0; padding: 8px; border-radius: var(--ui-radius-lg); background: var(--surface); }
+.report-panel { padding: 20px; border-radius: var(--ui-radius-lg); background: var(--surface); }
+.report-filters { gap: 14px; margin-bottom: 18px; padding: 16px; border-radius: var(--ui-radius-lg); }
+.report-summary-card { border-radius: var(--ui-radius-md); }
+.report-action { border-radius: var(--ui-radius-sm); }
+.report-table-wrap td:last-child { white-space: nowrap; }
+.report-table-wrap td:first-child { min-width: 220px; }
+
+.dashboard-page { max-width: none !important; }
+.dashboard-page .dashboard-kpi { min-width: 0; width: 100%; padding: 16px !important; border-radius: 14px !important; gap: 4px; }
+.dashboard-page .dashboard-kpi > div { min-width: 0; }
+.dashboard-page .dashboard-kpi span,
+.dashboard-page .dashboard-kpi p { max-width: 100%; overflow-wrap: anywhere; word-break: normal; }
+.dashboard-page .dashboard-kpi--primary { background: linear-gradient(135deg, var(--color-button-primary), var(--color-primary-hover)); }
+.dashboard-page .dashboard-quick-actions { align-content: flex-start; }
+.dashboard-page .dashboard-quick-actions > button { min-height: 38px; padding-block: 8px; border-radius: 10px; }
+.dashboard-page .dashboard-quick-actions > button span { line-height: 1.2; }
+.dashboard-page table th,
+.dashboard-page table td { padding-top: 10px; padding-bottom: 10px; }
+
+@media (max-width: 1100px) {
+  main .page-container { padding: 18px 16px 24px; }
+}
+@media (max-width: 760px) {
+  main .page-container { padding: 14px 12px 20px; gap: 14px; }
+  .page-header { padding: 16px !important; }
+  main .page-container table { min-width: 700px; }
+}
+@media (max-width: 520px) {
+  .ui-button { min-height: 36px !important; height: 36px; }
+  main .page-container input:not([type="checkbox"]):not([type="radio"]),
+  main .page-container select,
+  main .page-container textarea { min-height: 38px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ui-button:hover:not(:disabled) { transform: none; }
+}
+
+/* World-class SaaS finishing layer */
+main .page-container {
+  animation: pageEnter 180ms ease-out both;
+}
+
+main .page-container > .page-header,
+main .page-container > .ui-card,
+main .page-container > .ui-table {
+  box-shadow: var(--shadow-xs) !important;
+}
+
+main .page-container table tbody tr {
+  transition: background-color 140ms ease;
+}
+
+main .page-container table tbody tr:focus-within td {
+  background: var(--primary-soft);
+}
+
+.ui-button:focus-visible,
+.ui-tab:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(3px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  main .page-container { animation: none; }
+  main .page-container table tbody tr { transition: none; }
+}
+
+
+/* Final global number-input cleanup */
+main input[type="number"]::-webkit-outer-spin-button,
+main input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+main input[type="number"] { -moz-appearance: textfield; appearance: textfield; }

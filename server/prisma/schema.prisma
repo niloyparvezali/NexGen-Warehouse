@@ -1,0 +1,413 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Role {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  permissions Json?
+  is_active   Boolean  @default(true)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  users       User[]
+
+  @@map("roles")
+}
+
+model User {
+  id                Int                @id @default(autoincrement())
+  first_name        String
+  last_name         String
+  username          String             @unique
+  email             String             @unique
+  password          String
+  is_active         Boolean            @default(true)
+  role_id           Int
+  created_at        DateTime           @default(now())
+  updated_at        DateTime           @updatedAt
+  receivedPayments  CustomerPayment[]
+  expenses          Expense[]
+  purchases         Purchase[]
+  sales             Sale[]
+  stockTransactions StockTransaction[]
+  supplierPayments  SupplierPayment[]
+  role              Role               @relation(fields: [role_id], references: [id])
+
+  @@map("users")
+}
+
+model SupplierPayment {
+  id            String        @id @default(cuid())
+  paymentNumber String        @unique
+  purchaseId    String
+  supplierId    String
+  amount        Decimal       @db.Decimal(10, 2)
+  paymentMethod PaymentMethod
+  reference     String?
+  note          String?
+  paidById      Int
+  createdAt     DateTime      @default(now())
+  paidBy        User          @relation(fields: [paidById], references: [id])
+  purchase      Purchase      @relation(fields: [purchaseId], references: [id])
+  supplier      Supplier      @relation(fields: [supplierId], references: [id])
+}
+
+model Setting {
+  id                Int      @id @default(1)
+  company_name      String   @default("NexGen Warehouse")
+  company_logo      String?
+  company_address   String?
+  company_phone     String?
+  company_email     String?
+  company_website   String?
+  tax_number        String?
+  currency          String   @default("BDT")
+  timezone          String   @default("Asia/Dhaka")
+  invoice_prefix    String   @default("INV")
+  purchase_prefix   String   @default("PO")
+  payment_prefix    String   @default("PMT")
+  number_format     String   @default("000001")
+  barcode_type      String   @default("CODE128")
+  barcode_prefix    String   @default("PRD")
+  auto_generate_barcode Boolean @default(true)
+  barcode_print_size String   @default("medium")
+  email_host        String?
+  email_port        Int?
+  email_username    String?
+  email_password    String?
+  email_from        String?
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+
+  @@map("settings")
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  products    Product[]
+}
+
+model Brand {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  products    Product[]
+}
+
+model Unit {
+  id          String    @id @default(cuid())
+  name        String
+  symbol      String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  shortName   String
+  description String?
+  isActive    Boolean   @default(true)
+  products    Product[]
+}
+
+model Product {
+  id            String             @id @default(cuid())
+  name          String
+  sku           String             @unique
+  barcode       String?            @unique
+  description   String?
+  warranty      String?
+  sellingPrice  Decimal            @db.Decimal(10, 2)
+  minimumStock  Int                @default(0)
+  image         String?
+  isActive      Boolean            @default(true)
+  categoryId    String
+  brandId       String
+  unitId        String
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  purchasePrice Decimal            @db.Decimal(10, 2)
+  stockQuantity Int                @default(0)
+  brand         Brand              @relation(fields: [brandId], references: [id])
+  category      Category           @relation(fields: [categoryId], references: [id])
+  unit          Unit               @relation(fields: [unitId], references: [id])
+  purchaseItems PurchaseItem[]
+  saleItems     SaleItem[]
+  transactions  StockTransaction[]
+}
+
+model StockTransaction {
+  id          String               @id @default(cuid())
+  productId   String
+  type        StockTransactionType
+  quantity    Int
+  reference   String?
+  note        String?
+  createdById Int
+  createdAt   DateTime             @default(now())
+  createdBy   User                 @relation(fields: [createdById], references: [id])
+  product     Product              @relation(fields: [productId], references: [id])
+}
+
+model Supplier {
+  id             String            @id @default(cuid())
+  companyName    String?           @unique
+  contactPerson  String?
+  email          String?           @unique
+  phone          String?           @unique
+  address        String?
+  isActive       Boolean           @default(true)
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  city           String?
+  country        String?
+  currentBalance Decimal           @default(0) @db.Decimal(10, 2)
+  mobileNumber   String?           @unique
+  previousDue    Decimal           @default(0) @db.Decimal(10, 2)
+  status         SupplierStatus    @default(ACTIVE)
+  supplierName   String
+  taxNumber      String?
+  purchases      Purchase[]
+  payments       SupplierPayment[]
+}
+
+model Purchase {
+  id              String            @id @default(cuid())
+  purchaseNumber  String            @unique
+  supplierId      String
+  status          PurchaseStatus    @default(DRAFT)
+  subtotal        Decimal           @db.Decimal(10, 2)
+  discount        Decimal           @default(0) @db.Decimal(10, 2)
+  tax             Decimal           @default(0) @db.Decimal(10, 2)
+  total           Decimal           @db.Decimal(10, 2)
+  notes           String?
+  attachment      String?
+  createdById     Int
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  dueAmount       Decimal           @default(0) @db.Decimal(10, 2)
+  paidAmount      Decimal           @default(0) @db.Decimal(10, 2)
+  paymentMethod   PaymentMethod?
+  paymentStatus   PaymentStatus     @default(DUE)
+  invoiceNumber   String?
+  isActive        Boolean           @default(true)
+  referenceNumber String?
+  shippingCost    Decimal           @default(0) @db.Decimal(10, 2)
+  clientReferenceId String?         @unique
+  createdBy       User              @relation(fields: [createdById], references: [id])
+  supplier        Supplier          @relation(fields: [supplierId], references: [id])
+  items           PurchaseItem[]
+  payments        SupplierPayment[]
+}
+
+model PurchaseItem {
+  id            String   @id @default(cuid())
+  purchaseId    String
+  productId     String
+  quantity      Int
+  purchasePrice Decimal  @db.Decimal(10, 2)
+  total         Decimal  @db.Decimal(10, 2)
+  product       Product  @relation(fields: [productId], references: [id])
+  purchase      Purchase @relation(fields: [purchaseId], references: [id])
+}
+
+model Customer {
+  id             String            @id @default(cuid())
+  name           String
+  phone          String            @unique
+  email          String?           @unique
+  address        String?
+  openingDue     Decimal           @default(0) @db.Decimal(10, 2)
+  isActive       Boolean           @default(true)
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  city           String?
+  currentBalance Decimal           @default(0) @db.Decimal(10, 2)
+  customerType   CustomerType      @default(RETAIL)
+  notes          String?
+  previousDue    Decimal           @default(0) @db.Decimal(10, 2)
+  status         CustomerStatus    @default(ACTIVE)
+  payments       CustomerPayment[]
+  sales          Sale[]
+}
+
+model Sale {
+  id            String            @id @default(cuid())
+  invoiceNumber String            @unique
+  customerId    String?
+  createdById   Int
+  subtotal      Decimal           @db.Decimal(10, 2)
+  discount      Decimal           @default(0) @db.Decimal(10, 2)
+  tax           Decimal           @default(0) @db.Decimal(10, 2)
+  total         Decimal           @db.Decimal(10, 2)
+  notes         String?
+  status        SaleStatus        @default(COMPLETED)
+  isActive      Boolean           @default(true)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  dueAmount     Decimal           @default(0) @db.Decimal(10, 2)
+  paidAmount    Decimal           @default(0) @db.Decimal(10, 2)
+  paymentMethod PaymentMethod?
+  paymentStatus PaymentStatus     @default(DUE)
+  payments      CustomerPayment[]
+  createdBy     User              @relation(fields: [createdById], references: [id])
+  customer      Customer?         @relation(fields: [customerId], references: [id])
+  items         SaleItem[]
+  returns       SaleReturn[]
+
+  @@index([isActive])
+}
+
+model CustomerPayment {
+  id            String        @id @default(cuid())
+  paymentNumber String        @unique
+  saleId        String
+  customerId    String
+  amount        Decimal       @db.Decimal(10, 2)
+  paymentMethod PaymentMethod
+  reference     String?
+  note          String?
+  receivedById  Int
+  createdAt     DateTime      @default(now())
+  customer      Customer      @relation(fields: [customerId], references: [id])
+  receivedBy    User          @relation(fields: [receivedById], references: [id])
+  sale          Sale          @relation(fields: [saleId], references: [id])
+}
+
+model SaleItem {
+  id            String              @id @default(cuid())
+  saleId        String
+  productId     String
+  productName   String?
+  productSku    String?
+  quantity      Int
+  sellingPrice  Decimal             @db.Decimal(10, 2)
+  costAtSale    Decimal             @db.Decimal(10, 2)
+  total         Decimal             @db.Decimal(10, 2)
+  warrantyDays  Int?
+  serialNumbers String?
+  createdAt     DateTime            @default(now())
+  product       Product             @relation(fields: [productId], references: [id])
+  sale          Sale                @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  returnItems   SaleReturnItem[]
+}
+
+model SaleReturn {
+  id           String             @id @default(cuid())
+  saleId       String
+  returnNumber String             @unique
+  subtotal     Decimal            @db.Decimal(10, 2)
+  discount     Decimal            @default(0) @db.Decimal(10, 2)
+  tax          Decimal            @default(0) @db.Decimal(10, 2)
+  total        Decimal            @db.Decimal(10, 2)
+  notes        String?
+  createdAt    DateTime           @default(now())
+  sale         Sale               @relation(fields: [saleId], references: [id])
+  items        SaleReturnItem[]
+}
+
+model SaleReturnItem {
+  id           String   @id @default(cuid())
+  returnId     String
+  saleItemId   String
+  productId    String
+  productName  String?
+  productSku   String?
+  quantity     Int
+  sellingPrice Decimal  @db.Decimal(10, 2)
+  total        Decimal  @db.Decimal(10, 2)
+  saleReturn   SaleReturn @relation(fields: [returnId], references: [id], onDelete: Cascade)
+  saleItem     SaleItem   @relation(fields: [saleItemId], references: [id], onDelete: Cascade)
+}
+
+model Expense {
+  id            Int             @id @default(autoincrement())
+  expenseNumber String          @unique
+  category      ExpenseCategory
+  description   String
+  amount        Decimal         @db.Decimal(10, 2)
+  expenseDate   DateTime
+  paymentMethod PaymentMethod
+  note          String?
+  isActive      Boolean         @default(true)
+  createdById   Int
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  createdBy     User            @relation(fields: [createdById], references: [id])
+
+  @@index([expenseDate])
+  @@index([isActive])
+  @@index([category])
+}
+
+enum StockTransactionType {
+  STOCK_IN
+  STOCK_OUT
+  ADJUSTMENT
+}
+
+enum SupplierStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum PurchaseStatus {
+  DRAFT
+  COMPLETED
+  CANCELLED
+}
+
+enum CustomerType {
+  RETAIL
+  WHOLESALE
+}
+
+enum CustomerStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum SaleStatus {
+  COMPLETED
+  CANCELLED
+  RETURNED
+}
+
+enum PaymentStatus {
+  PAID
+  PARTIAL
+  DUE
+}
+
+enum PaymentMethod {
+  CASH
+  CARD
+  BANK_TRANSFER
+  MOBILE_BANKING
+  BKASH
+  NAGAD
+  ROCKET
+  UPAY
+}
+
+enum ExpenseCategory {
+  RENT
+  SALARY
+  ELECTRICITY
+  INTERNET
+  TRANSPORT
+  OFFICE_SUPPLIES
+  MAINTENANCE
+  MARKETING
+  MISCELLANEOUS
+}

@@ -1,0 +1,42 @@
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.data-table thead th,
+.data-table tbody td {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.data-table thead th {
+  height: 44px;
+  vertical-align: middle;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-align: left;
+  color: var(--color-text-secondary);
+  padding: 0 14px;
+}
+
+.data-table tbody td {
+  min-height: 46px;
+  vertical-align: middle;
+  font-size: 14px;
+  padding: 12px 14px;
+  color: var(--color-text);
+  word-break: normal;
+}
+
+.data-table tr {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}

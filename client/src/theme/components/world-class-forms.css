@@ -1,0 +1,296 @@
+/* Shared professional form system. Keep the modal as the single visual surface. */
+.wc-modal-content form.wc-form,
+.wc-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  width: 100%;
+}
+
+.wc-form-section {
+  border: 0;
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  min-width: 0;
+}
+
+.wc-form-section + .wc-form-section {
+  margin-top: 2px;
+  padding-top: 22px;
+  border-top: 1px solid color-mix(in srgb, var(--color-border) 58%, transparent);
+}
+
+.wc-form-section__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding-bottom: 11px;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 42%, transparent);
+}
+
+.wc-form-section__title {
+  margin: 0;
+  color: var(--color-text-primary, var(--text));
+  font-size: .95rem;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -.01em;
+}
+
+.wc-form-section__hint {
+  max-width: 720px;
+  margin: 5px 0 0;
+  color: var(--color-text-secondary, var(--text-secondary));
+  font-size: .74rem;
+  line-height: 1.5;
+}
+
+.wc-form-grid {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+
+.wc-form-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.wc-form-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.wc-form-grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+.wc-form-error {
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--color-danger) 30%, var(--color-border));
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--color-danger) 7%, var(--color-surface));
+  color: var(--color-danger);
+  font-size: .78rem;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+.wc-form label {
+  display: block;
+  margin: 0 0 7px;
+  color: var(--color-text-secondary, var(--text-secondary));
+  font-size: .75rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.wc-form .ui-field,
+.wc-form input:not([type="checkbox"]):not([type="radio"]),
+.wc-form select,
+.wc-form textarea,
+.wc-modal-content form:not(.wc-form) input:not([type="checkbox"]):not([type="radio"]),
+.wc-modal-content form:not(.wc-form) select,
+.wc-modal-content form:not(.wc-form) textarea {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 46px;
+  border: 1px solid var(--color-input-border);
+  border-radius: 10px;
+  background: var(--color-input-background);
+  color: var(--color-text-primary, var(--text));
+  box-shadow: none;
+  outline: none;
+  background-image: none;
+  transition: border-color .18s ease, background-color .18s ease, box-shadow .18s ease;
+}
+
+.wc-form input:not([type="checkbox"]):not([type="radio"]),
+.wc-form select,
+.wc-modal-content form:not(.wc-form) input:not([type="checkbox"]):not([type="radio"]),
+.wc-modal-content form:not(.wc-form) select {
+  height: 46px;
+  padding: 0 13px;
+}
+
+.wc-form textarea,
+.wc-modal-content form:not(.wc-form) textarea {
+  min-height: 104px;
+  padding: 11px 13px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.wc-form .ui-field::placeholder,
+.wc-form input::placeholder,
+.wc-form textarea::placeholder,
+.wc-modal-content form:not(.wc-form) input::placeholder,
+.wc-modal-content form:not(.wc-form) textarea::placeholder {
+  color: var(--color-text-secondary, var(--text-secondary));
+  opacity: .75;
+}
+
+.wc-form .ui-field:hover,
+.wc-form input:not([type="checkbox"]):not([type="radio"]):hover,
+.wc-form select:hover,
+.wc-form textarea:hover,
+.wc-modal-content form:not(.wc-form) input:not([type="checkbox"]):not([type="radio"]):hover,
+.wc-modal-content form:not(.wc-form) select:hover,
+.wc-modal-content form:not(.wc-form) textarea:hover {
+  border-color: var(--color-border-strong);
+}
+
+.wc-form .ui-field:focus,
+.wc-form input:not([type="checkbox"]):not([type="radio"]):focus,
+.wc-form select:focus,
+.wc-form textarea:focus,
+.wc-modal-content form:not(.wc-form) input:not([type="checkbox"]):not([type="radio"]):focus,
+.wc-modal-content form:not(.wc-form) select:focus,
+.wc-modal-content form:not(.wc-form) textarea:focus {
+  border-color: var(--color-input-focus, var(--color-primary));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 13%, transparent);
+}
+
+.wc-form input:disabled,
+.wc-form select:disabled,
+.wc-form textarea:disabled,
+.wc-modal-content form:not(.wc-form) input:disabled,
+.wc-modal-content form:not(.wc-form) select:disabled,
+.wc-modal-content form:not(.wc-form) textarea:disabled {
+  cursor: not-allowed;
+  opacity: .6;
+}
+
+.wc-form .wc-field-caption {
+  display: block;
+  margin-top: 6px;
+  color: var(--color-text-muted, var(--text-muted));
+  font-size: .69rem;
+}
+
+.wc-form-actions,
+.wc-modal-content form:not(.wc-form) > div:last-child {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-top: 2px;
+  padding-top: 16px;
+  border-top: 1px solid color-mix(in srgb, var(--color-border) 58%, transparent);
+}
+
+.wc-form-actions .ui-button,
+.wc-modal-content form:not(.wc-form) > div:last-child .ui-button {
+  min-width: 120px;
+}
+
+.wc-form-help {
+  color: var(--color-text-secondary, var(--text-secondary));
+  font-size: .72rem;
+  line-height: 1.5;
+}
+
+.wc-form-compact { gap: 18px; }
+.wc-form-compact .wc-form-section { padding: 0; }
+
+/* Product/purchase style grouped grids should stay flat, not become nested cards. */
+.wc-purchase-form > .grid:first-of-type,
+.wc-purchase-form > .grid:nth-of-type(2),
+.wc-purchase-form > .grid:nth-of-type(3),
+.wc-purchase-form > .grid:nth-of-type(4) {
+  border: 0;
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+}
+
+.wc-purchase-form > .grid + .grid {
+  padding-top: 20px;
+  border-top: 1px solid color-mix(in srgb, var(--color-border) 58%, transparent);
+}
+
+.wc-purchase-form > .grid:first-of-type:before,
+.wc-purchase-form > .grid:nth-of-type(2):before,
+.wc-purchase-form > .grid:nth-of-type(3):before,
+.wc-purchase-form > .grid:nth-of-type(4):before {
+  display: block;
+  grid-column: 1 / -1;
+  padding-bottom: 10px;
+  margin-bottom: 2px;
+  color: var(--color-text-primary, var(--text));
+  font-size: .9rem;
+  font-weight: 800;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 42%, transparent);
+}
+
+.wc-purchase-form > .grid:first-of-type:before { content: 'Supplier & reference'; }
+.wc-purchase-form > .grid:nth-of-type(2):before { content: 'Find and add products'; }
+.wc-purchase-form > .grid:nth-of-type(3):before { content: 'Totals & payment'; }
+.wc-purchase-form > .grid:nth-of-type(4):before { content: 'Document & notes'; }
+
+/* Forms that have not yet migrated to .wc-form still get the same clean system. */
+.wc-modal-content form:not(.wc-form) {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  min-width: 0;
+}
+
+.wc-modal-content form:not(.wc-form) label {
+  display: block;
+  margin: 0 0 7px;
+  color: var(--color-text-secondary, var(--text-secondary));
+  font-size: .75rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+/* Remove legacy visual boxing only from direct grid wrappers inside modal forms. */
+.wc-modal-content form:not(.wc-form) > .grid,
+.wc-modal-content form:not(.wc-form) > [class*="grid-cols"] {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+.wc-modal-content form:not(.wc-form) > .grid + .grid,
+.wc-modal-content form:not(.wc-form) > [class*="grid-cols"] + [class*="grid-cols"] {
+  padding-top: 18px;
+  border-top: 1px solid color-mix(in srgb, var(--color-border) 48%, transparent);
+}
+
+.wc-modal-content form:not(.wc-form) .wc-section-title,
+.wc-modal-content form:not(.wc-form) h3 {
+  margin: 0;
+  color: var(--color-text-primary, var(--text));
+  font-size: .92rem;
+  font-weight: 800;
+}
+
+@media (max-width: 900px) {
+  .wc-form-grid--3,
+  .wc-form-grid--4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .wc-form,
+  .wc-form-compact { gap: 18px; }
+
+  .wc-form-grid--2,
+  .wc-form-grid--3,
+  .wc-form-grid--4 { grid-template-columns: 1fr; }
+
+  .wc-form-section + .wc-form-section { padding-top: 18px; }
+
+  .wc-form-actions,
+  .wc-modal-content form:not(.wc-form) > div:last-child {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .wc-form-actions .ui-button,
+  .wc-modal-content form:not(.wc-form) > div:last-child .ui-button {
+    width: 100%;
+  }
+}
