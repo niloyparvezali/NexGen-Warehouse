@@ -497,7 +497,7 @@ export const getDashboardSummary = async () => {
       recent: todayExpenseReport.expenses.slice(0, 5).map((expense) => ({
         id: expense.id,
         expenseNumber: expense.expenseNumber,
-        category: expense.category,
+        category: expense.category?.name || expense.category,
         amount: Number(expense.amount || 0),
         expenseDate: expense.expenseDate,
       })),

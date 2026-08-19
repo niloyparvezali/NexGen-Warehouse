@@ -331,23 +331,36 @@ model SaleReturnItem {
 }
 
 model Expense {
-  id            Int             @id @default(autoincrement())
-  expenseNumber String          @unique
-  category      ExpenseCategory
-  description   String
-  amount        Decimal         @db.Decimal(10, 2)
-  expenseDate   DateTime
-  paymentMethod PaymentMethod
-  note          String?
-  isActive      Boolean         @default(true)
-  createdById   Int
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  createdBy     User            @relation(fields: [createdById], references: [id])
+  id              Int             @id @default(autoincrement())
+  expenseNumber   String          @unique
+  categoryId      String
+  description     String
+  amount          Decimal         @db.Decimal(10, 2)
+  expenseDate     DateTime
+  paymentMethod   PaymentMethod
+  referenceNumber String?
+  attachment      String?
+  note            String?
+  isActive        Boolean         @default(true)
+  createdById     Int
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  createdBy       User            @relation(fields: [createdById], references: [id])
+  category        ExpenseCategory @relation(fields: [categoryId], references: [id])
 
   @@index([expenseDate])
   @@index([isActive])
-  @@index([category])
+  @@index([categoryId])
+}
+
+model ExpenseCategory {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  description String?
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  expenses    Expense[]
 }
 
 enum StockTransactionType {
@@ -400,14 +413,4 @@ enum PaymentMethod {
   UPAY
 }
 
-enum ExpenseCategory {
-  RENT
-  SALARY
-  ELECTRICITY
-  INTERNET
-  TRANSPORT
-  OFFICE_SUPPLIES
-  MAINTENANCE
-  MARKETING
-  MISCELLANEOUS
-}
+

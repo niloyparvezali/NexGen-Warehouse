@@ -1,3 +1,6 @@
+-- Convert the legacy ExpenseCategory enum into the ExpenseCategory table.
+ALTER TYPE "ExpenseCategory" RENAME TO "ExpenseCategoryLegacy";
+
 -- Create dynamic expense categories and migrate the legacy enum-based expense category.
 CREATE TABLE "ExpenseCategory" (
   "id" TEXT NOT NULL,
@@ -35,7 +38,7 @@ WHERE c."name" = e."category"::text;
 
 ALTER TABLE "Expense" ALTER COLUMN "categoryId" SET NOT NULL;
 ALTER TABLE "Expense" DROP COLUMN "category";
-DROP TYPE IF EXISTS "ExpenseCategory";
+DROP TYPE "ExpenseCategoryLegacy";
 
 ALTER TABLE "Expense"
   ADD CONSTRAINT "Expense_categoryId_fkey"

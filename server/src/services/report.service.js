@@ -416,7 +416,7 @@ export const getExpenseReport = async (filters) => {
   }
 
   if (filters.category) {
-    where.category = filters.category;
+    where.category = { name: filters.category };
   }
 
   const expenses = await prisma.expense.findMany({
@@ -429,6 +429,7 @@ export const getExpenseReport = async (filters) => {
           last_name: true,
         },
       },
+      category: true,
     },
     orderBy: {
       expenseDate: "desc",
@@ -446,7 +447,7 @@ export const getExpenseReport = async (filters) => {
   // Group expenses by category
   const byCategory = {};
   expenses.forEach((expense) => {
-    const categoryName = expense.category || "Uncategorized";
+    const categoryName = expense.category?.name || expense.category || "Uncategorized";
 
     if (!byCategory[categoryName]) {
       byCategory[categoryName] = {

@@ -9,12 +9,18 @@ const generateExpenseNumber = async () => {
 export const createExpense = async (data, userId) => {
   const expenseNumber = await generateExpenseNumber();
 
+  const { category, ...expenseData } = data;
+  const categoryRecord = await prisma.expenseCategory.findUnique({ where: { name: category } });
+  if (!categoryRecord) throw new Error("Expense category not found.");
+
   return await prisma.expense.create({
     data: {
       expenseNumber,
-      ...data,
+      ...expenseData,
+      categoryId: categoryRecord.id,
       createdById: userId,
     },
+    include: { category: true },
   });
 };
 
@@ -64,7 +70,7 @@ export const getAllExpenses = async (query) => {
   }
 
   if (category) {
-    where.category = category;
+    where.category = { name: category };
   }
 
   if (startDate || endDate) {
@@ -92,6 +98,7 @@ export const getAllExpenses = async (query) => {
             last_name: true,
           },
         },
+        category: true,
       },
       orderBy: {
         expenseDate: "desc",
@@ -123,14 +130,23 @@ export const getExpenseById = async (id) => {
           last_name: true,
         },
       },
+      category: true,
     },
   });
 };
 
 export const updateExpense = async (id, data) => {
+  const { category, ...expenseData } = data;
+  const updateData = { ...expenseData };
+  if (category !== undefined) {
+    const categoryRecord = await prisma.expenseCategory.findUnique({ where: { name: category } });
+    if (!categoryRecord) throw new Error("Expense category not found.");
+    updateData.categoryId = categoryRecord.id;
+  }
   return await prisma.expense.update({
     where: { id },
-    data,
+    data: updateData,
+    include: { category: true },
   });
 };
 

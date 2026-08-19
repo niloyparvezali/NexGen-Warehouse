@@ -1,17 +1,7 @@
 import { z } from "zod";
 
 export const createExpenseSchema = z.object({
-  category: z.enum([
-    "RENT",
-    "SALARY",
-    "ELECTRICITY",
-    "INTERNET",
-    "TRANSPORT",
-    "OFFICE_SUPPLIES",
-    "MAINTENANCE",
-    "MARKETING",
-    "MISCELLANEOUS",
-  ]),
+  category: z.string().trim().min(1, "Category is required.").max(100),
 
   description: z.string().trim().min(2, "Description is required.").max(255),
 
