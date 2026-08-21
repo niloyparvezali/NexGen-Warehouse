@@ -100,7 +100,7 @@ model Category {
 
 model Brand {
   id          String    @id @default(cuid())
-  name        String    @unique
+  name String @unique
   description String?
   isActive    Boolean   @default(true)
   createdAt   DateTime  @default(now())
@@ -110,7 +110,7 @@ model Brand {
 
 model Unit {
   id          String    @id @default(cuid())
-  name        String    @unique
+  name String @unique
   symbol      String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
