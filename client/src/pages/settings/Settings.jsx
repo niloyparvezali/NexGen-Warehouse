@@ -73,6 +73,16 @@ const Settings = () => {
   const [form, setForm] = useState({});
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const resetInProgress =
+    resetting ||
+    resettingStock ||
+    resettingSales ||
+    resettingPurchases ||
+    resettingExpenses ||
+    resettingReturns ||
+    resettingReports ||
+    resettingCustomers ||
+    resettingSuppliers;
 
   const loadData = async () => {
     try {
@@ -182,7 +192,7 @@ const Settings = () => {
 
   const handleResetUserData = async () => {
     const confirmed = window.confirm(
-      "Reset User Data?\n\nThis will permanently remove user-created business and transaction data.\n\nThe following will be kept:\n- Brands\n- Units\n- Products\n- Categories\nEverything else will be removed.",
+      "Reset User Data?\n\nThis permanently removes ALL user-created business data, including customers, suppliers, sales, purchases, expenses, payments, returns, stock history, products, brands, units, and categories.\n\nSystem users, roles, and company settings are not deleted, so you can still sign in after the reset.",
     );
 
     if (!confirmed) {
@@ -220,7 +230,7 @@ const Settings = () => {
   };
 
   const handleResetSalesData = async () => {
-    const confirmed = window.confirm("Reset Sales Data?\n\nThis will clear sales, customer payments, and sale returns while keeping customers saved.");
+    const confirmed = window.confirm("Reset Sales Data?\n\nThis clears all sales, sale returns, customer payments, and their stock movements. Customer records stay saved and customer balances are reset.");
     if (!confirmed) return;
 
     try {
@@ -236,7 +246,7 @@ const Settings = () => {
   };
 
   const handleResetPurchasesData = async () => {
-    const confirmed = window.confirm("Reset Purchases Data?\n\nThis will clear purchases and supplier payments while keeping suppliers saved.");
+    const confirmed = window.confirm("Reset Purchases Data?\n\nThis clears all purchases, supplier payments, and their stock movements. Supplier records stay saved and supplier balances are reset.");
     if (!confirmed) return;
 
     try {
@@ -268,7 +278,7 @@ const Settings = () => {
   };
 
   const handleResetReturnsData = async () => {
-    const confirmed = window.confirm("Reset Easy Return Data?\n\nThis will clear all sale returns and return items.");
+    const confirmed = window.confirm("Reset Easy Return Data?\n\nThis clears all sale returns and return items, reverses the stock added by those returns, and restores affected sales to Completed.");
     if (!confirmed) return;
 
     try {
@@ -284,7 +294,7 @@ const Settings = () => {
   };
 
   const handleResetReportsData = async () => {
-    const confirmed = window.confirm("Reset Reports & Analytics Data?\n\nThis will clear the business transaction data used for reporting.");
+    const confirmed = window.confirm("Reset Reports & Analytics Data?\n\nThis clears the transaction data used by reports: sales, purchases, returns, payments, expenses, stock history, and related balances. Master records stay saved.");
     if (!confirmed) return;
 
     try {
@@ -300,7 +310,7 @@ const Settings = () => {
   };
 
   const handleResetCustomerData = async () => {
-    const confirmed = window.confirm("Reset Customer Data?\n\nThis will clear sales, payments, and balances for customers while keeping their customer records saved.");
+    const confirmed = window.confirm("Reset Customer Data?\n\nThis clears sales, returns, payments, and stock movements linked to customers while keeping customer records saved. Guest sales are not removed.");
     if (!confirmed) return;
 
     try {
@@ -316,7 +326,7 @@ const Settings = () => {
   };
 
   const handleResetSupplierData = async () => {
-    const confirmed = window.confirm("Reset Supplier Data?\n\nThis will clear purchases, payments, and balances for suppliers while keeping their supplier records saved.");
+    const confirmed = window.confirm("Reset Supplier Data?\n\nThis clears purchases, supplier payments, and their stock movements while keeping supplier records saved.");
     if (!confirmed) return;
 
     try {
@@ -570,7 +580,7 @@ const Settings = () => {
       {activeTab === "backup" && (
         <Card title="Backup & Restore">
           <div className="flex gap-3">
-            <Button onClick={handleBackup}>Create Backup</Button>
+            <Button onClick={handleBackup} disabled={resetInProgress}>Create Backup</Button>
           </div>
 
           <div className="mt-6 rounded-lg border border-[var(--color-danger)]/30 bg-[var(--color-danger)]/5 p-4">
@@ -578,10 +588,10 @@ const Settings = () => {
               Reset User Data
             </p>
             <p className="mb-4 text-sm text-[var(--text-secondary)]">
-              Remove user-created data while keeping Brands, Units, Products, and Categories.
+              Permanently remove all user-created business data, including inventory (Products, Brands, Units, and Categories). System users, roles, and company settings are preserved.
             </p>
             <div className="flex flex-wrap gap-3">
-              <Button variant="danger" onClick={handleResetUserData} disabled={resetting}>
+              <Button variant="danger" onClick={handleResetUserData} disabled={resetInProgress}>
                 {resetting ? "Resetting..." : "Reset User Data"}
               </Button>
             </div>
@@ -600,28 +610,28 @@ const Settings = () => {
               These reset actions permanently clear data for that section. Use carefully.
             </p>
             <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-              <Button variant="danger" className="min-h-[46px] w-full justify-center" onClick={handleResetStockData} disabled={resettingStock}>
+              <Button variant="danger" className="min-h-[46px] w-full justify-center" onClick={handleResetStockData} disabled={resetInProgress}>
                 {resettingStock ? "Resetting Stock..." : "Reset Stock"}
               </Button>
-              <Button variant="danger" className="min-h-[46px] w-full justify-center" onClick={handleResetSalesData} disabled={resettingSales}>
+              <Button variant="danger" className="min-h-[46px] w-full justify-center" onClick={handleResetSalesData} disabled={resetInProgress}>
                 {resettingSales ? "Resetting Sales..." : "Reset Sales"}
               </Button>
-              <Button variant="danger" className="min-h-[46px] w-full justify-center" onClick={handleResetPurchasesData} disabled={resettingPurchases}>
+              <Button variant="danger" className="min-h-[46px] w-full justify-center" onClick={handleResetPurchasesData} disabled={resetInProgress}>
                 {resettingPurchases ? "Resetting Purchases..." : "Reset Purchases"}
               </Button>
-              <Button variant="danger" className="min-h-[46px] w-full justify-center" onClick={handleResetExpensesData} disabled={resettingExpenses}>
+              <Button variant="danger" className="min-h-[46px] w-full justify-center" onClick={handleResetExpensesData} disabled={resetInProgress}>
                 {resettingExpenses ? "Resetting Expenses..." : "Reset Expenses"}
               </Button>
-              <Button variant="danger" className="min-h-[46px] w-full justify-center" onClick={handleResetReturnsData} disabled={resettingReturns}>
+              <Button variant="danger" className="min-h-[46px] w-full justify-center" onClick={handleResetReturnsData} disabled={resetInProgress}>
                 {resettingReturns ? "Resetting Returns..." : "Reset Easy Return"}
               </Button>
-              <Button variant="danger" className="min-h-[46px] w-full justify-center" onClick={handleResetReportsData} disabled={resettingReports}>
+              <Button variant="danger" className="min-h-[46px] w-full justify-center" onClick={handleResetReportsData} disabled={resetInProgress}>
                 {resettingReports ? "Resetting Reports..." : "Reset Reports"}
               </Button>
-              <Button variant="danger" className="min-h-[46px] w-full justify-center" onClick={handleResetCustomerData} disabled={resettingCustomers}>
+              <Button variant="danger" className="min-h-[46px] w-full justify-center" onClick={handleResetCustomerData} disabled={resetInProgress}>
                 {resettingCustomers ? "Resetting Customers..." : "Reset Customers"}
               </Button>
-              <Button variant="danger" className="min-h-[46px] w-full justify-center" onClick={handleResetSupplierData} disabled={resettingSuppliers}>
+              <Button variant="danger" className="min-h-[46px] w-full justify-center" onClick={handleResetSupplierData} disabled={resetInProgress}>
                 {resettingSuppliers ? "Resetting Suppliers..." : "Reset Suppliers"}
               </Button>
             </div>

@@ -1,0 +1,685 @@
+
+/*
+ * NexGen responsive rebuild layer.
+ * Desktop styles remain untouched above 1024px; all structural changes below
+ * are isolated to tablet/mobile breakpoints.
+ */
+
+:root {
+  --ng-mobile-gutter: 12px;
+  --ng-tablet-gutter: 18px;
+  --ng-touch: 42px;
+  --ng-panel-gap: 12px;
+}
+
+@media (max-width: 1100px) {
+  .app-shell,
+  .app-shell > *,
+  .app-shell main,
+  .app-shell main > *,
+  .world-module,
+  .page-container,
+  .page-standard {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .app-header__left,
+  .app-header__title-block,
+  .app-header__actions {
+    min-width: 0;
+  }
+
+  .app-header__actions {
+    gap: 6px;
+  }
+
+  .app-header__search-wrap {
+    min-width: 220px;
+  }
+
+  .world-module.page-container,
+  .page-container {
+    padding-left: var(--ng-tablet-gutter);
+    padding-right: var(--ng-tablet-gutter);
+  }
+
+  .world-module .page-header,
+  .page-standard .page-header,
+  .sales-page-header,
+  .wc-inventory-toolbar-head,
+  .wc-section-header {
+    min-width: 0;
+  }
+
+  .world-module .page-header > *,
+  .page-standard .page-header > *,
+  .sales-page-header > *,
+  .wc-inventory-toolbar-head > *,
+  .wc-section-header > * {
+    min-width: 0;
+  }
+
+  .world-module .page-title,
+  .page-standard .page-title {
+    overflow-wrap: anywhere;
+  }
+
+  .report-filters__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .access-control-page .access-filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .access-control-page .access-filter-grid .form-field:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 900px) {
+  .app-header {
+    min-height: 66px;
+    padding: 0 12px;
+    gap: 10px;
+  }
+
+  .app-header__search-wrap {
+    display: none;
+  }
+
+  .app-header__menu {
+    display: grid;
+    flex: 0 0 38px;
+  }
+
+  .app-header__title-block h1 {
+    max-width: min(46vw, 360px);
+  }
+
+  .app-header__actions {
+    margin-left: auto;
+  }
+
+  .world-module.page-container,
+  .page-container {
+    padding-top: 16px;
+    padding-bottom: 28px;
+  }
+
+  .world-module .flex.flex-wrap,
+  .page-standard .flex.flex-wrap,
+  .settings-page .settings-tabs,
+  .world-reports .report-tabs,
+  .easy-return-page .return-tabs {
+    max-width: 100%;
+  }
+
+  .inventory-summary-grid,
+  .report-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .world-module .wc-store-metrics--six {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .report-filters__actions,
+  .report-export-bar {
+    justify-content: flex-start;
+  }
+
+  .access-control-page .access-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  /* Drawer: backdrop is only interactive while the drawer is actually open. */
+  .sidebar-backdrop {
+    display: none !important;
+    pointer-events: none !important;
+  }
+
+  .sidebar-backdrop.is-visible {
+    display: block !important;
+    pointer-events: auto !important;
+  }
+
+  .sidebar-shell {
+    width: min(286px, 86vw) !important;
+    flex-basis: min(286px, 86vw) !important;
+  }
+
+  .app-header {
+    min-height: 62px;
+    padding: 0 10px;
+    gap: 8px;
+  }
+
+  .app-header__title-block h1 {
+    max-width: 44vw;
+    font-size: 15px;
+    white-space: normal;
+    line-height: 1.15;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .app-header__crumb {
+    display: none;
+  }
+
+  .app-icon-button,
+  .app-user-trigger,
+  .app-header__menu {
+    width: var(--ng-touch);
+    height: var(--ng-touch);
+    min-width: var(--ng-touch);
+  }
+
+  .app-user-copy,
+  .app-user-trigger > svg {
+    display: none;
+  }
+
+  .app-user-trigger {
+    justify-content: center;
+    padding: 0 5px;
+  }
+
+  .world-module.page-container,
+  .page-container {
+    padding: 14px var(--ng-mobile-gutter) 24px !important;
+  }
+
+  .world-module .page-header,
+  .page-standard .page-header,
+  .sales-page-header,
+  .wc-inventory-toolbar-head,
+  .wc-section-header {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+
+  .world-module .page-header .page-actions,
+  .world-module .page-header .toolbar-actions,
+  .page-standard .page-header .page-actions,
+  .sales-page-header .sales-view-switch {
+    width: 100%;
+  }
+
+  .world-module .page-header button,
+  .page-standard .page-header button {
+    min-height: var(--ng-touch);
+  }
+
+  .world-module .grid,
+  .page-standard .grid {
+    min-width: 0;
+  }
+
+  /* Search / filter toolbars become vertical stacks instead of squeezing. */
+  .world-module .page-toolbar,
+  .world-module .page-filters,
+  .page-standard .page-toolbar,
+  .page-standard .page-filters,
+  .inventory-filters,
+  .report-filters,
+  .access-filter-panel,
+  .expense-page > .flex.flex-col,
+  .expense-page > .flex.items-center {
+    padding: 12px !important;
+  }
+
+  .report-filters__grid,
+  .report-summary-grid,
+  .access-control-page .access-filter-grid,
+  .access-control-page .access-filter-grid--roles,
+  .access-control-page .access-stat-grid,
+  .inventory-summary-grid,
+  .world-module .wc-store-metrics--six,
+  .settings-page .settings-tabs {
+    grid-template-columns: 1fr !important;
+  }
+
+  .access-control-page .access-filter-grid .form-field:first-child {
+    grid-column: auto;
+  }
+
+  .report-filters__actions,
+  .report-export-bar {
+    width: 100%;
+  }
+
+  .report-filters__actions > *,
+  .report-export-bar > * {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+
+  .settings-page .settings-tabs,
+  .world-reports .report-tabs,
+  .easy-return-page .return-tabs {
+    display: flex;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    padding: 6px;
+  }
+
+  .settings-page .settings-tabs > *,
+  .world-reports .report-tabs > *,
+  .easy-return-page .return-tabs > * {
+    flex: 0 0 auto;
+    min-height: 42px;
+  }
+
+  /* Forms: only the responsive presentation changes. */
+  .world-module form .grid,
+  .page-standard form .grid,
+  .settings-page form .grid,
+  .access-control-page form .grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .world-module form .grid > *,
+  .page-standard form .grid > *,
+  .settings-page form .grid > *,
+  .access-control-page form .grid > * {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+
+  .world-module input,
+  .world-module select,
+  .world-module textarea,
+  .page-standard input,
+  .page-standard select,
+  .page-standard textarea,
+  .settings-page input,
+  .settings-page select,
+  .settings-page textarea,
+  .access-control-page input,
+  .access-control-page select,
+  .access-control-page textarea {
+    max-width: 100%;
+  }
+
+  /* Modals become actual mobile sheets/cards with internal scrolling. */
+  [role="dialog"] {
+    width: min(100% - 20px, 720px) !important;
+    max-width: calc(100vw - 20px) !important;
+    max-height: calc(100dvh - 20px) !important;
+    overflow: hidden !important;
+    margin: 10px !important;
+  }
+
+  [role="dialog"] > * {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  [role="dialog"] form,
+  [role="dialog"] .overflow-auto,
+  [role="dialog"] .overflow-y-auto {
+    max-height: calc(100dvh - 160px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  /* Card/list treatment for dense master-data + transaction lists. */
+  .world-purchase table,
+  .world-expenses table,
+  .world-products table,
+  .world-customers table,
+  .world-suppliers table,
+  .world-masterdata table,
+  .access-control-page .access-table-card .ui-table table {
+    min-width: 0 !important;
+    width: 100% !important;
+    table-layout: fixed !important;
+  }
+
+  .world-purchase table > thead,
+  .world-expenses table > thead,
+  .world-products table > thead,
+  .world-customers table > thead,
+  .world-suppliers table > thead,
+  .world-masterdata table > thead,
+  .access-control-page .access-table-card .ui-table table > thead {
+    display: none !important;
+  }
+
+  .world-purchase table > tbody,
+  .world-expenses table > tbody,
+  .world-products table > tbody,
+  .world-customers table > tbody,
+  .world-suppliers table > tbody,
+  .world-masterdata table > tbody,
+  .access-control-page .access-table-card .ui-table table > tbody {
+    display: grid !important;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .world-purchase table > tbody > tr,
+  .world-expenses table > tbody > tr,
+  .world-products table > tbody > tr,
+  .world-customers table > tbody > tr,
+  .world-suppliers table > tbody > tr,
+  .world-masterdata table > tbody > tr,
+  .access-control-page .access-table-card .ui-table table > tbody > tr {
+    display: grid !important;
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+    box-shadow: 0 4px 14px var(--shadow-color, transparent);
+  }
+
+  .world-purchase table > tbody > tr > td:not([colspan]),
+  .world-expenses table > tbody > tr > td:not([colspan]),
+  .world-products table > tbody > tr > td:not([colspan]),
+  .world-customers table > tbody > tr > td:not([colspan]),
+  .world-suppliers table > tbody > tr > td:not([colspan]),
+  .world-masterdata table > tbody > tr > td:not([colspan]),
+  .access-control-page .access-table-card .ui-table table > tbody > tr > td:not([colspan]) {
+    display: grid !important;
+    grid-template-columns: minmax(80px, 36%) minmax(0, 1fr);
+    align-items: start;
+    gap: 10px;
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 9px 0 !important;
+    border: 0 !important;
+    text-align: left !important;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .world-purchase table > tbody > tr > td::before,
+  .world-expenses table > tbody > tr > td::before,
+  .world-products table > tbody > tr > td::before,
+  .world-customers table > tbody > tr > td::before,
+  .world-suppliers table > tbody > tr > td::before,
+  .world-masterdata table > tbody > tr > td::before,
+  .access-control-page .access-table-card .ui-table table > tbody > tr > td::before {
+    content: attr(data-label);
+    color: var(--text-secondary);
+    font-size: 10px;
+    line-height: 1.35;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .world-purchase table > tbody > tr > td:first-child,
+  .world-expenses table > tbody > tr > td:first-child,
+  .world-products table > tbody > tr > td:first-child,
+  .world-customers table > tbody > tr > td:first-child,
+  .world-suppliers table > tbody > tr > td:first-child,
+  .world-masterdata table > tbody > tr > td:first-child {
+    display: none !important;
+  }
+
+  .world-purchase table > tbody > tr > td:last-child,
+  .world-expenses table > tbody > tr > td:last-child,
+  .world-products table > tbody > tr > td:last-child,
+  .world-customers table > tbody > tr > td:last-child,
+  .world-suppliers table > tbody > tr > td:last-child,
+  .world-masterdata table > tbody > tr > td:last-child,
+  .access-control-page .access-table-card .ui-table table > tbody > tr > td:last-child {
+    padding-top: 11px !important;
+    border-top: 1px solid var(--border-subtle, var(--border)) !important;
+  }
+
+  .world-purchase table > tbody > tr > td[colspan],
+  .world-expenses table > tbody > tr > td[colspan],
+  .world-products table > tbody > tr > td[colspan],
+  .world-customers table > tbody > tr > td[colspan],
+  .world-suppliers table > tbody > tr > td[colspan],
+  .world-masterdata table > tbody > tr > td[colspan],
+  .access-control-page .access-table-card .ui-table table > tbody > tr > td[colspan] {
+    display: block !important;
+    width: 100% !important;
+    padding: 26px 8px !important;
+    text-align: center !important;
+  }
+
+  /* Action areas: keep every operation visible and touchable. */
+  .world-module .page-actions,
+  .world-module .toolbar-actions,
+  .world-module .access-actions,
+  .page-standard .page-actions,
+  .page-standard .toolbar-actions,
+  .access-control-page .access-actions,
+  .world-module table td:last-child > div,
+  .page-standard table td:last-child > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    justify-content: flex-start;
+  }
+
+  .world-module .page-actions > button,
+  .world-module .toolbar-actions > button,
+  .world-module .access-actions > button,
+  .page-standard .page-actions > button,
+  .access-control-page .access-actions > button,
+  .world-module table td:last-child button,
+  .page-standard table td:last-child button {
+    min-height: var(--ng-touch);
+  }
+
+  /* POS: turn the two-column desktop workspace into a deliberate task flow. */
+  .sales-page {
+    min-width: 0;
+    padding: 12px !important;
+    gap: 10px !important;
+  }
+
+  .sales-page .sales-section {
+    width: 100%;
+    padding: 14px !important;
+    min-width: 0;
+  }
+
+  .sales-page .pos-search-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .sales-page .pos-result {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .sales-page .pos-result > * {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .sales-page .pos-item {
+    padding: 12px !important;
+  }
+
+  .sales-page .pos-total-panel {
+    position: sticky;
+    bottom: 8px;
+    z-index: 12;
+    box-shadow: 0 -6px 20px var(--color-shadow);
+  }
+
+  .sales-page .sales-view-switch {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sales-page .sales-view-switch button {
+    min-height: 42px !important;
+  }
+
+  .sales-history-shell {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  /* Payment/ledger/report tables remain truly tabular where information density
+     makes cards inferior. Their scroll container is intentional and bounded. */
+  .world-ledger .table-scroll,
+  .world-ledger .overflow-x-auto,
+  .world-payments .overflow-x-auto,
+  .world-reports .report-table-wrap,
+  .world-reports .overflow-x-auto,
+  .world-reports .table-scroll,
+  .wc-store-page .overflow-x-auto,
+  .access-permission-panel__table {
+    max-width: 100%;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  .world-ledger table,
+  .world-payments table,
+  .world-reports .report-table-wrap table,
+  .world-reports .overflow-x-auto table,
+  .wc-store-page .overflow-x-auto table,
+  .access-permission-panel__table table {
+    min-width: 620px !important;
+  }
+
+  .world-ledger .ledger-summary-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* Inventory workbench: cards first, controlled data scroll second. */
+  .wc-store-page .wc-store-metrics--six {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .wc-store-page .wc-inventory-toolbar-head {
+    align-items: stretch !important;
+  }
+
+  /* Keep important settings usable without a huge empty canvas. */
+  .settings-page {
+    min-height: auto !important;
+    height: auto !important;
+  }
+
+  .settings-page .settings-subpanel {
+    padding: 12px;
+  }
+
+  /* Empty/loading states should fit within short phones. */
+  .page-empty,
+  .world-module .empty-state,
+  .world-module .wc-loading-card {
+    min-height: 140px !important;
+    padding: 22px 14px !important;
+  }
+
+  .app-startup__card {
+    width: calc(100vw - 24px);
+    padding: 24px 20px;
+    border-radius: 18px;
+  }
+
+  .pagination,
+  nav[aria-label*="pagination" i],
+  .page-pagination {
+    max-width: 100%;
+  }
+
+  .page-pagination {
+    flex-wrap: wrap;
+    gap: 8px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .world-module.page-container,
+  .page-container {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  .app-header__title-block h1 {
+    max-width: 42vw;
+    font-size: 14px;
+  }
+
+  .app-icon-button,
+  .app-user-trigger,
+  .app-header__menu {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+  }
+
+  .app-header__actions {
+    gap: 4px;
+  }
+
+  .world-ledger .ledger-summary-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .inventory-summary-grid,
+  .report-summary-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .access-control-page .access-stat-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .world-module .page-header button,
+  .page-standard .page-header button {
+    width: 100%;
+  }
+
+  .world-module .flex.items-center,
+  .page-standard .flex.items-center {
+    min-width: 0;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-height: 760px) and (max-width: 1024px) {
+  .app-header {
+    min-height: 58px;
+  }
+
+  .app-header__menu,
+  .app-icon-button,
+  .app-user-trigger {
+    width: 38px;
+    min-width: 38px;
+    height: 38px;
+  }
+
+  .world-module.page-container,
+  .page-container {
+    padding-top: 10px !important;
+    padding-bottom: 18px !important;
+  }
+
+  .wc-page-header {
+    padding-top: 14px !important;
+    padding-bottom: 14px !important;
+  }
+
+  [role="dialog"] {
+    max-height: calc(100dvh - 12px) !important;
+  }
+}

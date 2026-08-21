@@ -102,7 +102,7 @@ const Sidebar = () => {
     <>
       <button
         type="button"
-        className="sidebar-backdrop"
+        className={`sidebar-backdrop ${sidebarOpen ? "is-visible" : ""}`}
         aria-label="Close navigation"
         onClick={() => setSidebarOpen(false)}
       />

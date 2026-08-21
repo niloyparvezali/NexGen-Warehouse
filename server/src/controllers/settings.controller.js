@@ -121,7 +121,7 @@ export const assignRoleToUser = asyncHandler(async (req, res) => {
 
 export const resetUserDataSystem = asyncHandler(async (req, res) => {
   await resetUserData();
-  return ApiResponse.success(res, null, "User data reset successfully.");
+  return ApiResponse.success(res, null, "All user-created business data reset successfully.");
 });
 
 export const resetStockSystem = asyncHandler(async (req, res) => {

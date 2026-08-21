@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { Copy, KeyRound, PencilLine, Plus, ShieldCheck, Trash2 } from "lucide-react";
 import { toast } from "react-hot-toast";
+import "./access-control.css";
 
+import Badge from "../../components/ui/Badge";
 import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
 import EmptyState from "../../components/ui/EmptyState";
@@ -223,7 +225,7 @@ const RolesPermissionsPage = () => {
   };
 
   return (
-    <div className="space-y-6 page-container">
+    <div className="access-control-page space-y-6 page-container">
       <PageHeader
         badge="Access control"
         title="Roles & Permissions"
@@ -236,33 +238,29 @@ const RolesPermissionsPage = () => {
         }
       />
 
-      <Card className="p-5">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-          <div className="w-full lg:max-w-md">
-            <Input
-              label="Search roles"
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              placeholder="Search by name or description"
-            />
-          </div>
+      <Card className="access-panel access-filter-panel">
+        <div className="access-filter-grid access-filter-grid--roles">
+          <Input
+            label="Search roles"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder="Search by name or description"
+          />
 
-          <div className="w-full lg:max-w-xs">
-            <Select
-              label="Status"
-              value={statusFilter}
-              onChange={(event) => setStatusFilter(event.target.value)}
-              options={[
-                { value: "all", label: "All roles" },
-                { value: "active", label: "Active" },
-                { value: "inactive", label: "Inactive" },
-              ]}
-            />
-          </div>
+          <Select
+            label="Status"
+            value={statusFilter}
+            onChange={(event) => setStatusFilter(event.target.value)}
+            options={[
+              { value: "all", label: "All roles" },
+              { value: "active", label: "Active" },
+              { value: "inactive", label: "Inactive" },
+            ]}
+          />
         </div>
       </Card>
 
-      <Card className="p-0">
+      <Card className="access-panel access-table-card">
         {loading ? (
           <div className="space-y-3 p-4">
             <Skeleton className="h-12 w-full rounded-2xl" />
@@ -279,7 +277,7 @@ const RolesPermissionsPage = () => {
           <Table>
             <Table.Header>
               <Table.Head>Role</Table.Head>
-              <Table.Head>Description</Table.Head>
+              <Table.Head className="access-col-secondary">Description</Table.Head>
               <Table.Head>Permissions</Table.Head>
               <Table.Head>Status</Table.Head>
               <Table.Head className="text-right">Actions</Table.Head>
@@ -289,7 +287,7 @@ const RolesPermissionsPage = () => {
                 <Table.Row key={role.id}>
                   <Table.Cell>
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--surface-muted)] text-[var(--text)]">
+                      <div className="access-role-mark" aria-hidden="true">
                         <ShieldCheck size={16} />
                       </div>
                       <div>
@@ -297,36 +295,30 @@ const RolesPermissionsPage = () => {
                       </div>
                     </div>
                   </Table.Cell>
-                  <Table.Cell>{role.description || "No description provided."}</Table.Cell>
+                  <Table.Cell className="access-col-secondary">{role.description || "No description provided."}</Table.Cell>
                   <Table.Cell>
-                    <span className="text-xs text-[var(--text-secondary)]">
+                    <Badge variant="info">
                       {Object.keys(role.permissions || {}).length} modules
-                    </span>
+                    </Badge>
                   </Table.Cell>
                   <Table.Cell>
-                    <span
-                      className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${
-                        role.is_active
-                          ? "bg-[var(--success-soft)] text-[var(--success)]"
-                          : "bg-[var(--danger-soft)] text-[var(--danger)]"
-                      }`}
-                    >
+                    <Badge variant={role.is_active ? "success" : "danger"}>
                       {role.is_active ? "Active" : "Inactive"}
-                    </span>
+                    </Badge>
                   </Table.Cell>
                   <Table.Cell className="text-right">
-                    <div className="flex justify-end gap-2">
-                      <Button size="sm" variant="secondary" onClick={() => openEditModal(role)}>
+                    <div className="access-actions">
+                      <Button aria-label={`Edit ${role.name}`} size="sm" variant="secondary" onClick={() => openEditModal(role)}>
                         <PencilLine size={14} />
-                        Edit
+                        <span className="access-actions-label">Edit</span>
                       </Button>
-                      <Button size="sm" variant="secondary" onClick={() => handleDuplicate(role)}>
+                      <Button aria-label={`Duplicate ${role.name}`} size="sm" variant="secondary" onClick={() => handleDuplicate(role)}>
                         <Copy size={14} />
-                        Duplicate
+                        <span className="access-actions-label">Duplicate</span>
                       </Button>
-                      <Button size="sm" variant="danger" onClick={() => handleDelete(role)}>
+                      <Button aria-label={`Delete ${role.name}`} size="sm" variant="danger" onClick={() => handleDelete(role)}>
                         <Trash2 size={14} />
-                        Delete
+                        <span className="access-actions-label">Delete</span>
                       </Button>
                     </div>
                   </Table.Cell>
@@ -363,14 +355,14 @@ const RolesPermissionsPage = () => {
             placeholder="Describe the purpose of this role"
           />
 
-          <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-muted)]/60 p-4">
-            <div className="mb-4 flex items-center gap-2">
+          <div className="access-permission-panel">
+            <div className="access-permission-panel__head">
               <KeyRound size={18} className="text-[var(--text-secondary)]" />
               <p className="font-semibold text-[var(--text)]">Permission Matrix</p>
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="min-w-full text-left text-sm">
+            <div className="access-permission-panel__table">
+              <table className="text-left text-sm">
                 <thead>
                   <tr>
                     <th className="pr-4 pb-3 font-medium text-[var(--text-secondary)]">Module</th>

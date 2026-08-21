@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
-import { Eye, PencilLine, Power, ShieldCheck, UserPlus } from "lucide-react";
+import { Eye, PencilLine, Power, ShieldCheck, UserCheck, UserPlus, UserX } from "lucide-react";
 import { toast } from "react-hot-toast";
+import "./access-control.css";
 
+import Badge from "../../components/ui/Badge";
 import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
 import EmptyState from "../../components/ui/EmptyState";
@@ -10,6 +12,7 @@ import Modal from "../../components/ui/Modal";
 import PageHeader from "../../components/ui/PageHeader";
 import Select from "../../components/ui/Select";
 import Skeleton from "../../components/ui/Skeleton";
+import StatCard from "../../components/dashboard/StatCard";
 import Table from "../../components/ui/Table";
 import { useAuth } from "../../context/auth/useAuth";
 import {
@@ -246,7 +249,7 @@ const UsersPage = () => {
   const roleOptions = roles.map((role) => ({ value: String(role.id), label: role.name }));
 
   return (
-    <div className="space-y-6 page-container">
+    <div className="access-control-page space-y-6 page-container">
       <PageHeader
         badge="Access control"
         title="Users"
@@ -259,58 +262,43 @@ const UsersPage = () => {
         }
       />
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <Card className="p-4">
-          <p className="text-sm text-[var(--text-secondary)]">Total Users</p>
-          <p className="mt-3 text-3xl font-semibold text-[var(--text)]">{stats.totalUsers}</p>
-        </Card>
-        <Card className="p-4">
-          <p className="text-sm text-[var(--text-secondary)]">Active Users</p>
-          <p className="mt-3 text-3xl font-semibold text-[var(--text)]">{stats.activeUsers}</p>
-        </Card>
-        <Card className="p-4">
-          <p className="text-sm text-[var(--text-secondary)]">Inactive Users</p>
-          <p className="mt-3 text-3xl font-semibold text-[var(--text)]">{stats.inactiveUsers}</p>
-        </Card>
-        <Card className="p-4">
-          <p className="text-sm text-[var(--text-secondary)]">Total Roles</p>
-          <p className="mt-3 text-3xl font-semibold text-[var(--text)]">{stats.totalRoles}</p>
-        </Card>
+      <div className="access-stat-grid">
+        <StatCard className="access-stat-card" title="Total Users" value={stats.totalUsers} icon={<UserPlus size={18} />} />
+        <StatCard className="access-stat-card" title="Active Users" value={stats.activeUsers} icon={<UserCheck size={18} />} />
+        <StatCard className="access-stat-card" title="Inactive Users" value={stats.inactiveUsers} icon={<UserX size={18} />} />
+        <StatCard className="access-stat-card" title="Total Roles" value={stats.totalRoles} icon={<ShieldCheck size={18} />} />
       </div>
 
-      <Card className="p-5">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="w-full lg:max-w-md">
-            <Input
-              label="Search users"
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              placeholder="Search by name, email, or role"
-            />
-          </div>
+      <Card className="access-panel access-filter-panel">
+        <div className="access-filter-grid">
+          <Input
+            label="Search users"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder="Search by name, email, or role"
+          />
 
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <Select
-              label="Status"
-              value={statusFilter}
-              onChange={(event) => setStatusFilter(event.target.value)}
-              options={[
-                { value: "all", label: "All" },
-                { value: "active", label: "Active" },
-                { value: "inactive", label: "Inactive" },
-              ]}
-            />
-            <Select
-              label="Role"
-              value={roleFilter}
-              onChange={(event) => setRoleFilter(event.target.value)}
-              options={[{ value: "all", label: "All roles" }, ...roleOptions]}
-            />
-          </div>
+          <Select
+            label="Status"
+            value={statusFilter}
+            onChange={(event) => setStatusFilter(event.target.value)}
+            options={[
+              { value: "all", label: "All" },
+              { value: "active", label: "Active" },
+              { value: "inactive", label: "Inactive" },
+            ]}
+          />
+
+          <Select
+            label="Role"
+            value={roleFilter}
+            onChange={(event) => setRoleFilter(event.target.value)}
+            options={[{ value: "all", label: "All roles" }, ...roleOptions]}
+          />
         </div>
       </Card>
 
-      <Card className="p-0">
+      <Card className="access-panel access-table-card">
         {loading ? (
           <div className="space-y-3 p-4">
             <Skeleton className="h-12 w-full rounded-2xl" />
@@ -327,11 +315,11 @@ const UsersPage = () => {
           <Table>
             <Table.Header>
               <Table.Head>Name</Table.Head>
-              <Table.Head>Email</Table.Head>
+              <Table.Head className="access-col-secondary">Email</Table.Head>
               <Table.Head>Role</Table.Head>
               <Table.Head>Status</Table.Head>
-              <Table.Head>Created</Table.Head>
-              <Table.Head>Last activity</Table.Head>
+              <Table.Head className="access-col-secondary">Created</Table.Head>
+              <Table.Head className="access-col-secondary">Last activity</Table.Head>
               <Table.Head className="text-right">Actions</Table.Head>
             </Table.Header>
             <Table.Body>
@@ -343,38 +331,33 @@ const UsersPage = () => {
                       <p className="text-xs text-[var(--text-secondary)]">@{user.username || "user"}</p>
                     </div>
                   </Table.Cell>
-                  <Table.Cell>{user.email}</Table.Cell>
+                  <Table.Cell className="access-col-secondary">{user.email}</Table.Cell>
                   <Table.Cell>{user.role?.name || "Unassigned"}</Table.Cell>
                   <Table.Cell>
-                    <span
-                      className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${
-                        user.is_active
-                          ? "bg-[var(--success-soft)] text-[var(--success)]"
-                          : "bg-[var(--danger-soft)] text-[var(--danger)]"
-                      }`}
-                    >
+                    <Badge variant={user.is_active ? "success" : "danger"}>
                       {user.is_active ? "Active" : "Inactive"}
-                    </span>
+                    </Badge>
                   </Table.Cell>
-                  <Table.Cell>{formatDate(user.created_at)}</Table.Cell>
-                  <Table.Cell>{formatDate(user.updated_at || user.created_at)}</Table.Cell>
+                  <Table.Cell className="access-col-secondary">{formatDate(user.created_at)}</Table.Cell>
+                  <Table.Cell className="access-col-secondary">{formatDate(user.updated_at || user.created_at)}</Table.Cell>
                   <Table.Cell className="text-right">
-                    <div className="flex justify-end gap-2">
-                      <Button size="sm" variant="secondary" onClick={() => { setSelectedUser(user); setIsViewerOpen(true); }}>
+                    <div className="access-actions">
+                      <Button aria-label={`View ${buildUserName(user)}`} size="sm" variant="secondary" onClick={() => { setSelectedUser(user); setIsViewerOpen(true); }}>
                         <Eye size={14} />
-                        View
+                        <span className="access-actions-label">View</span>
                       </Button>
-                      <Button size="sm" variant="secondary" onClick={() => openEditModal(user)}>
+                      <Button aria-label={`Edit ${buildUserName(user)}`} size="sm" variant="secondary" onClick={() => openEditModal(user)}>
                         <PencilLine size={14} />
-                        Edit
+                        <span className="access-actions-label">Edit</span>
                       </Button>
                       <Button
+                        aria-label={`${user.is_active ? "Deactivate" : "Activate"} ${buildUserName(user)}`}
                         size="sm"
                         variant={user.is_active ? "outline" : "secondary"}
                         onClick={() => handleStatusToggle(user)}
                       >
                         <Power size={14} />
-                        {user.is_active ? "Deactivate" : "Activate"}
+                        <span className="access-actions-label">{user.is_active ? "Deactivate" : "Activate"}</span>
                       </Button>
                     </div>
                   </Table.Cell>

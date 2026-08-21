@@ -1,0 +1,291 @@
+/*
+ * NexGen access-control pages
+ *
+ * This layer is intentionally scoped to Users + Roles & Permissions.
+ * It reuses the existing NexGen design tokens/components without changing
+ * unrelated pages.
+ */
+
+.access-control-page {
+  --access-radius-panel: 14px;
+  --access-radius-control: 10px;
+  --access-panel-padding: 16px;
+  --access-section-gap: 18px;
+}
+
+.access-control-page .access-panel {
+  border: 1px solid var(--border) !important;
+  border-radius: var(--access-radius-panel) !important;
+  background: var(--surface) !important;
+  box-shadow: none !important;
+  min-width: 0;
+}
+
+.access-control-page .access-filter-panel {
+  padding: var(--access-panel-padding) !important;
+}
+
+.access-control-page .access-filter-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(180px, .7fr) minmax(180px, .7fr);
+  gap: 14px;
+  align-items: end;
+}
+
+.access-control-page .access-filter-grid--roles {
+  grid-template-columns: minmax(0, 1fr) minmax(180px, .45fr);
+}
+
+.access-control-page .access-filter-grid .form-field {
+  min-width: 0;
+}
+
+.access-control-page .access-filter-grid .form-control {
+  min-height: 42px !important;
+  height: 42px;
+  border-radius: var(--access-radius-control) !important;
+}
+
+.access-control-page .access-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.access-control-page .access-stat-card {
+  min-height: 104px;
+  border-radius: var(--access-radius-panel) !important;
+  background: var(--surface) !important;
+  border-color: var(--border) !important;
+  box-shadow: none !important;
+  padding: 16px !important;
+}
+
+.access-control-page .access-stat-card .stat-card-label {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.35;
+  letter-spacing: .12em;
+}
+
+.access-control-page .access-stat-card .stat-card-number {
+  margin-top: 10px;
+  font-size: 27px;
+  line-height: 1;
+}
+
+.access-control-page .access-table-card {
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.access-control-page .access-table-card .ui-table {
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.access-control-page .access-table-card .ui-table > div {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.access-control-page .access-table-card table {
+  min-width: 860px;
+}
+
+.access-control-page .access-table-card table th,
+.access-control-page .access-table-card table td {
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+}
+
+.access-control-page .access-table-card table th {
+  background: var(--surface-muted) !important;
+}
+
+.access-control-page .access-table-card table tbody tr {
+  background: var(--surface) !important;
+}
+
+.access-control-page .access-table-card table tbody tr:hover {
+  background: var(--surface-light) !important;
+}
+
+.access-control-page .access-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.access-control-page .access-actions .ui-button {
+  min-height: 38px;
+  border-radius: var(--access-radius-control) !important;
+}
+
+.access-control-page .access-actions-label {
+  display: inline;
+}
+
+.access-control-page .access-role-mark {
+  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-muted);
+  color: var(--primary);
+}
+
+.access-control-page .access-permission-panel {
+  border: 1px solid var(--border);
+  border-radius: var(--access-radius-panel);
+  background: var(--surface-muted);
+  padding: 14px;
+}
+
+.access-control-page .access-permission-panel__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.access-control-page .access-permission-panel__table {
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  -webkit-overflow-scrolling: touch;
+}
+
+.access-control-page .access-permission-panel__table table {
+  min-width: 720px;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.access-control-page .access-permission-panel__table th,
+.access-control-page .access-permission-panel__table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.access-control-page .access-permission-panel__table tr:last-child td {
+  border-bottom: 0;
+}
+
+.access-control-page .access-permission-panel__table th {
+  background: var(--surface-muted);
+  color: var(--text-secondary);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.access-control-page .access-permission-panel__table input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--primary);
+}
+
+@media (max-width: 1100px) {
+  .access-control-page .access-filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .access-control-page .access-filter-grid .form-field:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .access-control-page .access-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .access-control-page {
+    --access-panel-padding: 14px;
+  }
+
+  .access-control-page .access-filter-grid,
+  .access-control-page .access-filter-grid--roles {
+    grid-template-columns: 1fr;
+  }
+
+  .access-control-page .access-filter-grid .form-field:first-child {
+    grid-column: auto;
+  }
+
+  .access-control-page .access-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .access-control-page .access-stat-card {
+    min-height: 94px;
+    padding: 14px !important;
+  }
+
+  .access-control-page .access-stat-card .stat-card-number {
+    font-size: 24px;
+  }
+
+  .access-control-page .access-table-card table {
+    min-width: 680px;
+  }
+
+  .access-control-page .access-table-card .access-col-secondary {
+    display: none;
+  }
+
+  .access-control-page .access-actions {
+    justify-content: flex-start;
+    gap: 6px;
+  }
+
+  .access-control-page .access-actions .ui-button {
+    width: 38px;
+    min-width: 38px;
+    min-height: 38px;
+    padding: 0 8px;
+  }
+
+  .access-control-page .access-actions-label {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .access-control-page .access-stat-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .access-control-page .access-stat-card {
+    min-height: 88px;
+    padding: 12px !important;
+  }
+
+  .access-control-page .access-stat-card .stat-card-label {
+    font-size: 10px;
+  }
+
+  .access-control-page .access-stat-card .stat-card-number {
+    margin-top: 8px;
+    font-size: 22px;
+  }
+
+  .access-control-page .access-table-card table {
+    min-width: 610px;
+  }
+}

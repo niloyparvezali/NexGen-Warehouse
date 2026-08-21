@@ -187,50 +187,225 @@ export async function assignUserRole(id, roleId) {
   });
 }
 
+const reverseStockTransactions = async (tx, references) => {
+  const uniqueReferences = [...new Set((references || []).filter(Boolean))];
+
+  if (uniqueReferences.length === 0) {
+    return;
+  }
+
+  const transactions = await tx.stockTransaction.findMany({
+    where: {
+      reference: {
+        in: uniqueReferences,
+      },
+    },
+    select: {
+      id: true,
+      productId: true,
+      type: true,
+      quantity: true,
+    },
+  });
+
+  if (transactions.length === 0) {
+    return;
+  }
+
+  const stockDeltas = new Map();
+
+  for (const transaction of transactions) {
+    const quantity = Number(transaction.quantity || 0);
+    const delta =
+      transaction.type === "STOCK_OUT"
+        ? quantity
+        : transaction.type === "STOCK_IN"
+          ? -quantity
+          : 0;
+
+    if (delta === 0) continue;
+
+    stockDeltas.set(
+      transaction.productId,
+      (stockDeltas.get(transaction.productId) || 0) + delta,
+    );
+  }
+
+  for (const [productId, delta] of stockDeltas) {
+    if (delta !== 0) {
+      await tx.product.update({
+        where: { id: productId },
+        data: {
+          stockQuantity: {
+            increment: delta,
+          },
+        },
+      });
+    }
+  }
+
+  await tx.stockTransaction.deleteMany({
+    where: {
+      id: {
+        in: transactions.map((transaction) => transaction.id),
+      },
+    },
+  });
+};
+
+const getSaleReferences = async (tx, where = {}) => {
+  const sales = await tx.sale.findMany({
+    where,
+    select: {
+      id: true,
+      invoiceNumber: true,
+    },
+  });
+
+  if (sales.length === 0) {
+    return {
+      saleIds: [],
+      saleReferences: [],
+      returnReferences: [],
+      affectedSaleIds: [],
+    };
+  }
+
+  const saleIds = sales.map((sale) => sale.id);
+  const returns = await tx.saleReturn.findMany({
+    where: {
+      saleId: {
+        in: saleIds,
+      },
+    },
+    select: {
+      saleId: true,
+      returnNumber: true,
+    },
+  });
+
+  return {
+    saleIds,
+    saleReferences: sales.map((sale) => sale.invoiceNumber),
+    returnReferences: returns.map((saleReturn) => saleReturn.returnNumber),
+    affectedSaleIds: [...new Set(returns.map((saleReturn) => saleReturn.saleId))],
+  };
+};
+
+const getPurchaseReferences = async (tx, where = {}) => {
+  const purchases = await tx.purchase.findMany({
+    where,
+    select: {
+      id: true,
+      purchaseNumber: true,
+    },
+  });
+
+  return {
+    purchaseIds: purchases.map((purchase) => purchase.id),
+    purchaseReferences: purchases.map((purchase) => purchase.purchaseNumber),
+  };
+};
+
 export async function resetStockData() {
-  await prisma.$transaction([
-    prisma.stockTransaction.deleteMany(),
-    prisma.product.updateMany({
+  await prisma.$transaction(async (tx) => {
+    await tx.stockTransaction.deleteMany();
+    await tx.product.updateMany({
       data: {
         stockQuantity: 0,
       },
-    }),
-  ]);
+    });
+  });
 
   return { success: true };
 }
 
 export async function resetSalesData() {
-  await prisma.$transaction([
-    prisma.saleReturnItem.deleteMany(),
-    prisma.saleReturn.deleteMany(),
-    prisma.customerPayment.deleteMany(),
-    prisma.saleItem.deleteMany(),
-    prisma.sale.deleteMany(),
-    prisma.customer.updateMany({
+  await prisma.$transaction(async (tx) => {
+    const {
+      saleIds,
+      saleReferences,
+      returnReferences,
+    } = await getSaleReferences(tx);
+
+    await reverseStockTransactions(tx, [
+      ...saleReferences,
+      ...returnReferences,
+    ]);
+
+    await tx.saleReturnItem.deleteMany({
+      where: {
+        saleReturn: {
+          saleId: {
+            in: saleIds,
+          },
+        },
+      },
+    });
+    await tx.saleReturn.deleteMany({
+      where: {
+        saleId: {
+          in: saleIds,
+        },
+      },
+    });
+    await tx.customerPayment.deleteMany({
+      where: {
+        saleId: {
+          in: saleIds,
+        },
+      },
+    });
+    await tx.saleItem.deleteMany({
+      where: {
+        saleId: {
+          in: saleIds,
+        },
+      },
+    });
+    await tx.sale.deleteMany();
+
+    await tx.customer.updateMany({
       data: {
         currentBalance: 0,
         previousDue: 0,
         openingDue: 0,
       },
-    }),
-  ]);
+    });
+  });
 
   return { success: true };
 }
 
 export async function resetPurchasesData() {
-  await prisma.$transaction([
-    prisma.supplierPayment.deleteMany(),
-    prisma.purchaseItem.deleteMany(),
-    prisma.purchase.deleteMany(),
-    prisma.supplier.updateMany({
+  await prisma.$transaction(async (tx) => {
+    const { purchaseIds, purchaseReferences } = await getPurchaseReferences(tx);
+
+    await reverseStockTransactions(tx, purchaseReferences);
+
+    await tx.supplierPayment.deleteMany({
+      where: {
+        purchaseId: {
+          in: purchaseIds,
+        },
+      },
+    });
+    await tx.purchaseItem.deleteMany({
+      where: {
+        purchaseId: {
+          in: purchaseIds,
+        },
+      },
+    });
+    await tx.purchase.deleteMany();
+
+    await tx.supplier.updateMany({
       data: {
         currentBalance: 0,
         previousDue: 0,
       },
-    }),
-  ]);
+    });
+  });
 
   return { success: true };
 }
@@ -241,85 +416,219 @@ export async function resetExpensesData() {
 }
 
 export async function resetReturnData() {
-  await prisma.$transaction([
-    prisma.saleReturnItem.deleteMany(),
-    prisma.saleReturn.deleteMany(),
-  ]);
+  await prisma.$transaction(async (tx) => {
+    const returns = await tx.saleReturn.findMany({
+      select: {
+        saleId: true,
+        returnNumber: true,
+      },
+    });
+
+    await reverseStockTransactions(
+      tx,
+      returns.map((saleReturn) => saleReturn.returnNumber),
+    );
+
+    const affectedSaleIds = [...new Set(returns.map((saleReturn) => saleReturn.saleId))];
+
+    await tx.saleReturnItem.deleteMany();
+    await tx.saleReturn.deleteMany();
+
+    if (affectedSaleIds.length > 0) {
+      await tx.sale.updateMany({
+        where: {
+          id: {
+            in: affectedSaleIds,
+          },
+          status: "RETURNED",
+        },
+        data: {
+          status: "COMPLETED",
+        },
+      });
+    }
+  });
 
   return { success: true };
 }
 
 export async function resetReportsData() {
-  await resetUserData();
-  return { success: true };
-}
+  await prisma.$transaction(async (tx) => {
+    const { saleReferences, returnReferences } = await getSaleReferences(tx);
+    const { purchaseReferences } = await getPurchaseReferences(tx);
 
-export async function resetCustomerData() {
-  await prisma.$transaction([
-    prisma.saleReturnItem.deleteMany(),
-    prisma.saleReturn.deleteMany(),
-    prisma.customerPayment.deleteMany(),
-    prisma.saleItem.deleteMany(),
-    prisma.sale.deleteMany(),
-    prisma.customer.updateMany({
+    await reverseStockTransactions(tx, [
+      ...saleReferences,
+      ...returnReferences,
+      ...purchaseReferences,
+    ]);
+
+    await tx.saleReturnItem.deleteMany();
+    await tx.saleReturn.deleteMany();
+    await tx.customerPayment.deleteMany();
+    await tx.saleItem.deleteMany();
+    await tx.sale.deleteMany();
+    await tx.supplierPayment.deleteMany();
+    await tx.purchaseItem.deleteMany();
+    await tx.purchase.deleteMany();
+    await tx.expense.deleteMany();
+    await tx.stockTransaction.deleteMany();
+
+    await tx.customer.updateMany({
       data: {
         currentBalance: 0,
         previousDue: 0,
         openingDue: 0,
       },
-    }),
-  ]);
+    });
+    await tx.supplier.updateMany({
+      data: {
+        currentBalance: 0,
+        previousDue: 0,
+      },
+    });
+    await tx.product.updateMany({
+      data: {
+        stockQuantity: 0,
+      },
+    });
+  });
+
+  return { success: true };
+}
+
+export async function resetCustomerData() {
+  await prisma.$transaction(async (tx) => {
+    const {
+      saleIds,
+      saleReferences,
+      returnReferences,
+    } = await getSaleReferences(tx, {
+      customerId: {
+        not: null,
+      },
+    });
+
+    await reverseStockTransactions(tx, [
+      ...saleReferences,
+      ...returnReferences,
+    ]);
+
+    await tx.saleReturnItem.deleteMany({
+      where: {
+        saleReturn: {
+          saleId: {
+            in: saleIds,
+          },
+        },
+      },
+    });
+    await tx.saleReturn.deleteMany({
+      where: {
+        saleId: {
+          in: saleIds,
+        },
+      },
+    });
+    await tx.customerPayment.deleteMany({
+      where: {
+        saleId: {
+          in: saleIds,
+        },
+      },
+    });
+    await tx.saleItem.deleteMany({
+      where: {
+        saleId: {
+          in: saleIds,
+        },
+      },
+    });
+    await tx.sale.deleteMany({
+      where: {
+        id: {
+          in: saleIds,
+        },
+      },
+    });
+
+    await tx.customer.updateMany({
+      data: {
+        currentBalance: 0,
+        previousDue: 0,
+        openingDue: 0,
+      },
+    });
+  });
 
   return { success: true };
 }
 
 export async function resetSupplierData() {
-  await prisma.$transaction([
-    prisma.purchaseItem.deleteMany(),
-    prisma.supplierPayment.deleteMany(),
-    prisma.purchase.deleteMany(),
-    prisma.supplier.updateMany({
+  await prisma.$transaction(async (tx) => {
+    const { purchaseIds, purchaseReferences } = await getPurchaseReferences(tx);
+
+    await reverseStockTransactions(tx, purchaseReferences);
+
+    await tx.supplierPayment.deleteMany({
+      where: {
+        purchaseId: {
+          in: purchaseIds,
+        },
+      },
+    });
+    await tx.purchaseItem.deleteMany({
+      where: {
+        purchaseId: {
+          in: purchaseIds,
+        },
+      },
+    });
+    await tx.purchase.deleteMany();
+
+    await tx.supplier.updateMany({
       data: {
         currentBalance: 0,
         previousDue: 0,
       },
-    }),
-  ]);
+    });
+  });
 
   return { success: true };
 }
 
 export async function resetUserData() {
-  await prisma.$transaction([
-    prisma.saleReturnItem.deleteMany(),
-    prisma.saleReturn.deleteMany(),
-    prisma.purchaseItem.deleteMany(),
-    prisma.saleItem.deleteMany(),
-    prisma.stockTransaction.deleteMany(),
-    prisma.customerPayment.deleteMany(),
-    prisma.supplierPayment.deleteMany(),
-    prisma.expense.deleteMany(),
-    prisma.purchase.deleteMany(),
-    prisma.sale.deleteMany(),
-    prisma.customer.updateMany({
-      data: {
-        currentBalance: 0,
-        previousDue: 0,
-        openingDue: 0,
-      },
-    }),
-    prisma.supplier.updateMany({
-      data: {
-        currentBalance: 0,
-        previousDue: 0,
-      },
-    }),
-    prisma.product.updateMany({
-      data: {
-        stockQuantity: 0,
-      },
-    }),
-  ]);
+  await prisma.$transaction(async (tx) => {
+    const { saleReferences, returnReferences } = await getSaleReferences(tx);
+    const { purchaseReferences } = await getPurchaseReferences(tx);
+
+    await reverseStockTransactions(tx, [
+      ...saleReferences,
+      ...returnReferences,
+      ...purchaseReferences,
+    ]);
+
+    await tx.saleReturnItem.deleteMany();
+    await tx.saleReturn.deleteMany();
+    await tx.purchaseItem.deleteMany();
+    await tx.saleItem.deleteMany();
+    await tx.stockTransaction.deleteMany();
+    await tx.customerPayment.deleteMany();
+    await tx.supplierPayment.deleteMany();
+    await tx.expense.deleteMany();
+    await tx.purchase.deleteMany();
+    await tx.sale.deleteMany();
+    await tx.customer.deleteMany();
+    await tx.supplier.deleteMany();
+
+    // Reset User Data is a full business-data reset. Remove all inventory
+    // master data as well as its transactional data. System users, roles,
+    // and company settings remain intact so administrators can still sign in.
+    await tx.product.deleteMany();
+    await tx.brand.deleteMany();
+    await tx.unit.deleteMany();
+    await tx.category.deleteMany();
+  });
 
   return { success: true };
 }
