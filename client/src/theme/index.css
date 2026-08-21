@@ -25,6 +25,7 @@
 @import "./components/report-ui.css";
 @import "./components/app-ui.css";
 @import "./components/ui-standard.css";
+@import "./components/auth.css";
 
 :root { color-scheme: dark; }
 html[data-theme="dark"], html.dark { color-scheme: dark; }

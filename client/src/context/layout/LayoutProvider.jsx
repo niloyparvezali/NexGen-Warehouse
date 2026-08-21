@@ -1,15 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LayoutContext from "./LayoutContext";
 
+const getInitialSidebarState = () => typeof window !== "undefined" ? window.innerWidth >= 768 : true;
+
 export default function LayoutProvider({ children }) {
-  // One state intentionally serves both desktop collapse and mobile open/close:
-  // desktop: true = full sidebar, false = icon rail; mobile: true = open, false = closed.
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(getInitialSidebarState);
+  const toggleSidebar = () => setSidebarOpen((prev) => !prev);
 
-  const value = {
-    sidebarOpen,
-    toggleSidebar: () => setSidebarOpen((prev) => !prev),
-  };
+  useEffect(() => {
+    const mobile = window.innerWidth < 768;
+    document.body.classList.toggle("sidebar-drawer-open", mobile && sidebarOpen);
+    return () => document.body.classList.remove("sidebar-drawer-open");
+  }, [sidebarOpen]);
 
-  return <LayoutContext.Provider value={value}>{children}</LayoutContext.Provider>;
+  return (
+    <LayoutContext.Provider value={{ sidebarOpen, toggleSidebar, setSidebarOpen }}>
+      {children}
+    </LayoutContext.Provider>
+  );
 }
