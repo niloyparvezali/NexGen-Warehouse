@@ -90,7 +90,7 @@ model Setting {
 
 model Category {
   id          String    @id @default(cuid())
-  name        String
+  name String @unique
   description String?
   isActive    Boolean   @default(true)
   createdAt   DateTime  @default(now())
