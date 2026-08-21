@@ -342,6 +342,9 @@ export const getDashboardSummary = async () => {
         createdBy: {
           select: { first_name: true, last_name: true, username: true },
         },
+        category: {
+          select: { name: true },
+        },
       },
       orderBy: { createdAt: "desc" },
       take: 5,
